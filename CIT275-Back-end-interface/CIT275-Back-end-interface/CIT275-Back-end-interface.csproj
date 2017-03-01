@@ -197,12 +197,18 @@
     <Compile Include="Controllers\FileLogsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="DAL\UsersAndRolesRepository.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201703011424580_Init.cs" />
     <Compile Include="Migrations\201703011424580_Init.Designer.cs">
       <DependentUpon>201703011424580_Init.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703011519404_identity.cs" />
+    <Compile Include="Migrations\201703011519404_identity.Designer.cs">
+      <DependentUpon>201703011519404_identity.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -216,6 +222,7 @@
     <Compile Include="Models\TransactionLog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\RolesViewModels.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -304,6 +311,14 @@
     <Content Include="Views\FileLogs\Details.cshtml" />
     <Content Include="Views\FileLogs\Edit.cshtml" />
     <Content Include="Views\FileLogs\Index.cshtml" />
+    <Content Include="Views\Roles\Create.cshtml" />
+    <Content Include="Views\Roles\Edit.cshtml" />
+    <Content Include="Views\Roles\Index.cshtml" />
+    <Content Include="Views\Roles\Manage.cshtml" />
+    <Content Include="Views\Roles\RolesForUser.cshtml" />
+    <Content Include="Views\Roles\UserDetail.cshtml" />
+    <Content Include="Views\Roles\UserList.cshtml" />
+    <Content Include="Views\Roles\UserRolesView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -318,6 +333,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201703011424580_Init.resx">
       <DependentUpon>201703011424580_Init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703011519404_identity.resx">
+      <DependentUpon>201703011519404_identity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

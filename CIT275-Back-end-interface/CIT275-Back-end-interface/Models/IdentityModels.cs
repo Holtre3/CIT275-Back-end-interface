@@ -38,7 +38,32 @@ namespace CIT275_Back_end_interface.Models
         [StringLength(50)]
         [Display(Name = "Best Time to Call:")]
         public string ContactTime { get; set; }
-        
+
+        [Display(Name = "Last Name")]
+        [MaxLength(50)]
+        public string LastName { get; set; }
+
+
+        [Display(Name = "First Name")]
+        [MaxLength(50)]
+        public string FirstName { get; set; }
+
+        [Display(Name = "Address")]
+        public string Address { get; set; }
+
+        [Display(Name = "City")]
+        [MaxLength(50)]
+        public string City { get; set; }
+
+        [Display(Name = "State")]
+        [MaxLength(50)]
+        public string State { get; set; }
+
+        [Display(Name = "Zip")]
+        [MaxLength(10)]
+        public string Zip { get; set; }
+
+
 
 
     }

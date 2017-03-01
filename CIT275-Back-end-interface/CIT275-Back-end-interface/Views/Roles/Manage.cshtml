@@ -1,0 +1,78 @@
+﻿
+@{
+    ViewBag.Title = "ManageUserRoles";
+}
+
+<hr />
+<h2>Manage User Roles</h2>
+@Html.ActionLink("Create New Role", "Create") | @Html.ActionLink("Manage User Role", "ManageUserRoles")
+<hr />
+
+@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+{
+
+<h2>Role Add to User</h2>
+
+using (Html.BeginForm("RoleAddToUser", "Roles"))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <p>
+        
+       
+        Username: @Html.DropDownList("UserName", (IEnumerable<SelectListItem>)ViewBag.UserName)
+
+        Role Name: @Html.DropDownList("RoleName", (IEnumerable<SelectListItem>)ViewBag.Roles, "Select ...")
+    </p>
+
+    <input type="submit" value="Save" />
+}
+<hr />
+<h3>Get Roles for a User</h3>
+using (Html.BeginForm("GetRoles", "Roles"))
+{
+    @Html.AntiForgeryToken()
+    <p>
+        Username: @Html.DropDownList("UserName", (IEnumerable<SelectListItem>)ViewBag.UserName)
+        <input type="submit" value="Get Roles for this User" />
+    </p>
+}
+
+if (ViewBag.RolesForThisUser != null)
+{
+    <div style="background-color:yellow;">
+        <h3>Roles for this user </h3>
+        <ol>
+            @foreach (string s in ViewBag.RolesForThisUser)
+            {
+                <li>@s</li>
+            }
+        </ol>
+    </div>
+}
+
+<hr />
+
+}
+
+
+
+<div>
+    <a href="@Url.Action("UserList")" title="User Listing">
+        <i class="glyphicon  glyphicon-registration-mark"></i>
+        <span class="sr-only">Roles Management - User List</span>
+        &brvbar;Roles Management - User Listing
+    </a> <br />
+    <a href="@Url.Action("Index", "Admin")" title="Administration Dashboard">
+        <i class="glyphicon glyphicon-dashboard"></i>
+        <span class="sr-only">Administration Dashboard</span>
+        &brvbar;Administration Dashboard
+    </a><br />
+    <a href="@Url.Action("Index", "Account")" title="User Management">
+        <i class="glyphicon  glyphicon-user"></i>
+        <span class="sr-only">User Management</span>
+        &brvbar;User Management
+    </a> <br />
+
+</div>

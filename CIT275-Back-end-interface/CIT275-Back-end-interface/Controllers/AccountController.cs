@@ -422,6 +422,237 @@ namespace CIT275_Back_end_interface.Controllers
 
             base.Dispose(disposing);
         }
+        #region INDEX
+
+        // [Authorize(Roles = "Admin")]
+        public ActionResult Index()
+        {
+
+            var model = UserManager.Users.ToList();
+
+            var list = db.Roles.OrderBy(r => r.Name).ToList().Select(rr => new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
+            ViewBag.Roles = list;
+
+            return View(model);
+        }
+
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public ActionResult Index(FormCollection fc)
+        {
+
+
+
+
+            string userName = "", lastName = "", email = "", role = "";
+
+
+            userName = fc["userName"] != null ? fc["userName"] : "";
+            lastName = fc["lastName"] != null ? fc["lastName"] : "";
+            email = fc["email"] != null ? fc["email"] : "";
+            role = fc["role"] != null ? fc["role"] : "";
+            var list = db.Roles.OrderBy(r => r.Name).ToList().Select(rr => new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
+
+            ViewBag.Roles = list;
+
+
+            var model = _dc.GetUserSearchableList(userName, lastName, email, role);
+
+            return View(model);
+
+        }
+        #endregion
+
+        #region CREATE
+
+
+        //
+        // GET: /Account/Create
+        [Authorize(Roles = "Admin")]
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// Register - Post
+        /// Revisions: 
+        ///     4/11/16 - Added code to add the user role to a new user as the default role
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Create([Bind(Include = "UserName,Email, Password,ConfirmPassword, FirstName, LastName, Address, City, State, Zip")]CreateViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser
+                {
+                    UserName = model.UserName,
+                    Email = model.Email,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Address = model.Address,
+                    City = model.City,
+                    State = model.State,
+                    Zip = model.Zip
+                };
+                var result = await UserManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    //
+
+                    //  await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
+                    // Add with initial role of user
+                    // 4/11/16
+                    UserManager.AddToRole(user.Id, "User");
+
+
+
+                    return RedirectToAction("Index");
+                }
+                AddErrors(result);
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        #endregion
+
+        #region EDIT
+        [Authorize(Roles = "Admin")]
+        public ActionResult Edit(string Id)
+        {
+            var user = UserManager.FindById(Id);
+            if (user == null)
+            {
+                // Don't reveal that the user does not exist or is not confirmed
+                return View("ForgotPasswordConfirmation");
+            }
+            EditUserViewModel model = new EditUserViewModel();
+            model.Id = user.Id;
+            model.Address = user.Address;
+            model.City = user.City;
+            model.Email = user.Email;
+            model.FirstName = user.FirstName;
+            model.LastName = user.LastName;
+            model.State = user.State;
+            model.UserName = user.UserName;
+            model.Zip = user.Zip;
+            model.PhoneNumber = user.PhoneNumber;
+            model.EmailConfirmed = user.EmailConfirmed;
+            return View(model);
+
+        }
+
+        public ActionResult ErrorPage(string msg)
+        {
+            ViewBag.Msg = msg;
+
+            return View();
+        }
+
+        // POST: /Account/Register
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit([Bind(Include = "UserName, Email, FirstName, LastName, Address, City, State, Zip, EmailConfirmed,PhoneNumber,PhoneNumberConfirmed, Password, LockoutEnabled, AccessFailedCount")]EditUserViewModel model)
+        {
+
+
+            if (ModelState.IsValid)
+            {
+                var user = await UserManager.FindByNameAsync(model.UserName);
+                if (user == null)
+                {
+                    // Don't reveal that the user does not exist
+                    return RedirectToAction("ResetPasswordConfirmation", "Account");
+                }
+                else
+                {
+                    user.UserName = model.UserName;
+                    user.Email = model.Email;
+                    user.FirstName = model.FirstName;
+                    user.LastName = model.LastName;
+                    user.Address = model.Address;
+                    user.City = model.City;
+                    user.State = model.State;
+                    user.Zip = model.Zip;
+                    user.PhoneNumber = model.PhoneNumber;
+                    user.EmailConfirmed = model.EmailConfirmed;
+
+                    IdentityResult result = await UserManager.UpdateAsync(user);
+
+                    if (result.Succeeded == true)
+                    {
+
+
+
+
+                        return RedirectToAction("Index");
+
+                    }
+
+                }
+
+            }
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+
+        //[HttpPost]
+        //[Authorize(Roles = "Admin")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> ChangePassword(SetUserPasswordViewModel model)
+        //{
+        //    ApplicationUser user = await UserManager.FindByIdAsync(model.Id);
+        //    if (user == null)
+        //    {
+        //        return ErrorPage("Invalid Operation tryning to set password.");
+
+        //    }
+        //    user.PasswordHash = UserManager.PasswordHasher.HashPassword(model.Password);
+        //    IdentityResult result = await UserManager.UpdateAsync(user);
+        //    if (!result.Succeeded)
+        //    {
+
+        //        AddErrors(result);
+        //        string msg = "";
+        //        foreach (var e in result.Errors)
+        //        {
+        //            msg += e.ToString();
+        //        }
+        //        return ErrorPage(msg);
+        //    }
+        //    else
+        //    {
+        //        //TODO: Notify User their email has changed - I want this to be optional
+        //        //utils.EmailSender eSender = new utils.EmailSender();
+
+        //        //string sBody = eSender.GetNotifyMsgBody("Your account has changed for Carries Frugal Living website (CarriesFrugalLiving.com)"
+        //        //    , "If you received this message unexpectedly please contact us. For security reasons we will not provide a link, but simply access the main site and click Contact Us. Thank you.");
+        //        //var e = eSender.Send(user.Email, "Account changed at CarriesFrugalLiving.com", sBody, true, null);
+        //        //eSender = null;
+        //        //if (e.Length > 0 )
+        //        //{
+        //        //    ViewBag.ErrMsg = e; // to show error
+        //        //} else
+        //        //{
+        //        //    return RedirectToAction("Index");
+        //        //}
+        //    }
+
+        //    return RedirectToAction("Index");
+        //}
+
+        #endregion
+
 
         #region Helpers
         // Used for XSRF protection when adding external logins
