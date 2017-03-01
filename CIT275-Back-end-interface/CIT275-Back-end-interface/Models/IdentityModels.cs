@@ -59,9 +59,8 @@ namespace CIT275_Back_end_interface.Models
         DbSet<AssetType> AssetTypes { get; set; }
         DbSet<Asset> Assets { get; set; }
         DbSet<ClientAsset> ClientAssets {get; set;}
-        DbSet<FileLog> FileLogs { get; set; }
+        public DbSet<FileLog> FileLogs { get; set; }
         DbSet<TransactionLog> TransactionLogs { get; set; }
 
-        
     }
 }
