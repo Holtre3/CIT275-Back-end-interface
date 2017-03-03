@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using CIT275_Back_end_interface.Models;
+using DAL;
 
 namespace CIT275_Back_end_interface.Controllers
 {
@@ -17,6 +18,8 @@ namespace CIT275_Back_end_interface.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        ApplicationDbContext db = new ApplicationDbContext();
+        private DataRepository _dc = new DataRepository();
 
         public AccountController()
         {
