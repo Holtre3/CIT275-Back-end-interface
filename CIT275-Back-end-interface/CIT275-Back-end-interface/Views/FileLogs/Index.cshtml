@@ -5,13 +5,31 @@
     Layout = "_FileLogLayout.cshtml";
 }
 
-<div class="container-fluid fullscreen">
+<div class="container-fluid">
     <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
+        <div class="col-sm-3 col-md-2 logSidebar">
+            <h2 class="sub-header">Clients</h2>
 
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ClientID</th>
+                            <th>ClientName</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <!--<tr>
+                            <td></td>
+                            <td></td>
+                        </tr>-->
+                    </tbody>
+                </table>
+            </div>
         </div>
 
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 cold-md-offset-2 main">
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 logMain">
             <h1 class="page-header">Log Files</h1>
 
             <h2 class="sub-header">{ClientName}</h2>
@@ -93,6 +111,11 @@
                     </tbody>
                 </table>
             </div>
+
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - Interactive Aerial</p>
+            </footer>
         </div>
     </div>
 </div>

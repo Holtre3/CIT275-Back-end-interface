@@ -34,19 +34,16 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Client", "Index", "Clients")</li>
-                    <li>@Html.ActionLink("Log Files", "Index", "FileLogs")</li>
+                    <li>@Html.ActionLink("Client", "Index", "Clients/Index")</li>
+                    <li>@Html.ActionLink("Log Files", "Index", "FileLogs/Index")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
     </div>
-    <div class="container body-content">
+    <div>
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Interactive Aerial</p>
-        </footer>
+        
     </div>
 
     @Scripts.Render("~/bundles/jquery")
