@@ -1,0 +1,24 @@
+﻿
+@{
+    ViewBag.Title = "File Processing";
+}
+
+<h2>Files</h2>
+
+@using (Html.BeginForm())
+{
+    <div id="FilterSearch" class="form-horizontal">
+        <div class="form-group">
+            <input type="submit" value="Process Files" class="btn col-md-2 col-md-offset-2" />
+        </div>
+    </div>
+}
+
+<br />
+
+<ol>
+    @foreach (var file in ViewBag.FileList)
+    {
+        <li>@file</li>
+    }
+</ol>
