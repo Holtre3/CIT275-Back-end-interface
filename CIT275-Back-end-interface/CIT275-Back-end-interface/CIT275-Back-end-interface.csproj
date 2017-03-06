@@ -321,7 +321,6 @@
     <Content Include="Views\Roles\UserList.cshtml" />
     <Content Include="Views\Roles\UserRolesView.cshtml" />
     <Content Include="Views\FileLogs\_FileLogLayout.cshtml" />
-    <Content Include="Views\Ftp\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -23,6 +23,24 @@ namespace DAL
             public string UserID { get; set; }
         }
 
+        private class clID
+        {
+            public string UserID { get; set; }
+            public int ClientID { get; set; }
+
+        }
+        public int GetClientByUID(string uid)
+        {
+            var idParam = new SqlParameter
+            {
+                ParameterName = "uid",
+                Value = uid
+            };
+            clID rc = _dc.Database.SqlQuery<clID>("Select top 1 UserID, ClientID, ContactID from ClientUsers where UserId = @uid", idParam).SingleOrDefault();
+            return rc.ClientID;
+
+        }
+
         #region ROLES
         public string GetRoleByName(string role)
         {
