@@ -130,7 +130,13 @@
 
     <script type="text/javascript">
             $(document).ready(function () {
-                $("#logTable").tablesorter();
+                $("#logTable").tablesorter({
+                    headers: {
+                        9: { 
+                            sorter: false
+                        }
+                    }
+                });
             });
     </script>
 
