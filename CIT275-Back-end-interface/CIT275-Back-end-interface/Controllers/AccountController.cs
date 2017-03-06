@@ -425,7 +425,7 @@ namespace CIT275_Back_end_interface.Controllers
 
             base.Dispose(disposing);
         }
-        /*#region INDEX
+        #region INDEX
 
         // [Authorize(Roles = "Admin")]
         public ActionResult Index()
@@ -654,7 +654,7 @@ namespace CIT275_Back_end_interface.Controllers
         //    return RedirectToAction("Index");
         //}
 
-        #endregion*/
+        #endregion
 
 
         #region Helpers
