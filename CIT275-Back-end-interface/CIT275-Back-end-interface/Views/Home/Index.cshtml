@@ -5,7 +5,14 @@
 <div class="centered">
     <div class="jumbotron">
         <h1>Interactive Aerial</h1>
-        <p class="lead">Welcome, @User.Identity.GetUserName()!</p>
+        @if (User.Identity.GetUserName() == "" || User.Identity.GetUserName() == null)
+        {
+            <p class="lead">Welcome!</p>
+        }
+        else
+        {
+            <p class="lead">Welcome, @User.Identity.GetUserName()!</p>
+        }
     </div>
 
     <div class="row">
@@ -17,7 +24,7 @@
             </p>
             <p><a class="btn btn-default" href="~/Clients/Index">View Clients &raquo;</a></p>
         </div>
-        <div class="col-md-4 ">
+        <div class="col-md-4">
             <h2>Logs</h2>
             <p>
                 This page will take you to a list of logs with search and filter functionality. Go here to create, update, view, delete, and download specific logs or log packages.
