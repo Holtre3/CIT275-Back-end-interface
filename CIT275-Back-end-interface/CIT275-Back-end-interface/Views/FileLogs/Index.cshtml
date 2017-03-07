@@ -37,7 +37,7 @@
             </div>
         </div>
 
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 logMain">
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2">
             <h1 class="page-header">Log Files</h1>
 
             <h2 class="sub-header">{ClientName}</h2>
@@ -128,23 +128,23 @@
     </div>
 </div>
 
-    <script type="text/javascript">
-            $(document).ready(function () {
-                $("#logTable").tablesorter({
-                    headers: {
-                        5: {
-                            sorter: false
-                        },
-                        6: {
-                            sorter: false
-                        },
-                        9: { 
-                            sorter: false
-                        }
-                    }
-                });
-            });
-    </script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#logTable").tablesorter({
+            headers: {
+                5: {
+                    sorter: false
+                },
+                6: {
+                    sorter: false
+                },
+                9: { 
+                    sorter: false
+                }
+            }
+        });
+    });
+</script>
 
 @helper formatStatus(string s)
 {
