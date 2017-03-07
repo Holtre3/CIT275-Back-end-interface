@@ -1,10 +1,11 @@
-﻿@{
+﻿@using Microsoft.AspNet.Identity
+@{
     ViewBag.Title = "Interactive Aerial Log Management System";
 }
 <div class="centered">
     <div class="jumbotron">
         <h1>Interactive Aerial</h1>
-        <p class="lead">Welcome, {Implement usernames}.</p>
+        <p class="lead">Welcome, @User.Identity.GetUserName()!</p>
     </div>
 
     <div class="row">
