@@ -7,11 +7,11 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-3 col-md-2 logSidebarLeft">
+        <div class="col-sm-3 col-md-2 logSidebar">
             <h2 class="sub-header">Clients</h2>
 
             <div class="table-responsive">
-                <table class="table table-striped table-hover">
+                <table class="table table-striped">
                     <thead>
                         <tr>
                             <th>ClientID</th>
@@ -32,17 +32,12 @@
                             <td>3</td>
                             <td>Corn</td>
                         </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>NASA</td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
-
-        <div class="col-sm-6 col-sm-offset-3 col-md-8 col-md-offset-2 logMain">
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 logMain">
             <h1 class="page-header">Log Files</h1>
 
             <h2 class="sub-header">{ClientName}</h2>
@@ -124,58 +119,35 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-sm-3 col-sm-offset-9 col-md-2 col-md-offset-10 logSidebarRight">
-                <div>
-                    <h2 class="sub-header">Log Details</h2>
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <tbody>
-                            <tr>
-                                <th>LogFileId</th>
-                                <td>1</td>
 
-                            </tr>
-                            <tr>
-                                <th>LogFileName</th>
-                                <td>log1</td>
-                            </tr>
-                            <tr>
-                                <th>LogFileDate</th>
-                                <td>1/1/2017</td>
-                                
-                            </tr>
-                            <tr>
-                                <th>LogFileSize</th>
-                                <td>1kb</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <p><a class="btn btn-default" href="~/FileLogs/Index">Download Log &#9660;</a></p>
-                <p><a class="btn btn-default" href="~/FileLogs/Index">Archive Log &#9660;</a></p>
-            </div>
             <hr />
             <footer>
                 <p>&copy; @DateTime.Now.Year - Interactive Aerial</p>
             </footer>
         </div>
     </div>
+</div>
 
     <script type="text/javascript">
-        $(document).ready(function () {
-            $("#logTable").tablesorter({
-                headers: {
-                    9: {
-                        sorter: false
+            $(document).ready(function () {
+                $("#logTable").tablesorter({
+                    headers: {
+                        5: {
+                            sorter: false
+                        },
+                        6: {
+                            sorter: false
+                        },
+                        9: { 
+                            sorter: false
+                        }
                     }
-                }
+                });
             });
-        });
     </script>
 
-    @helper formatStatus(string s)
-    {
+@helper formatStatus(string s)
+{
 
 }
 
