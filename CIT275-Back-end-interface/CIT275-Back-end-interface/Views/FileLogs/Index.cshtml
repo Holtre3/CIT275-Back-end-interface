@@ -1,17 +1,17 @@
 ﻿@model IEnumerable<CIT275_Back_end_interface.Models.FileLog>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Logs";
     Layout = "_FileLogLayout.cshtml";
 }
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-3 col-md-2 logSidebar">
+        <div class="col-sm-3 col-md-2 logSidebarLeft">
             <h2 class="sub-header">Clients</h2>
 
             <div class="table-responsive">
-                <table class="table table-striped">
+                <table class="table table-striped table-hover">
                     <thead>
                         <tr>
                             <th>ClientID</th>
@@ -37,7 +37,7 @@
             </div>
         </div>
 
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2">
+        <div class="col-sm-6 col-sm-offset-3 col-md-8 col-md-offset-2 logMain">
             <h1 class="page-header">Log Files</h1>
 
             <h2 class="sub-header">{ClientName}</h2>
@@ -119,6 +119,37 @@
                     </tbody>
                 </table>
             </div>
+            <div class="col-sm-3 col-sm-offset-9 col-md-2 col-md-offset-10 logSidebarRight">
+                <div>
+                    <h2 class="sub-header">Log Details</h2>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <tbody>
+                            <tr>
+                                <th>LogFileId</th>
+                                <td>1</td>
+
+                            </tr>
+                            <tr>
+                                <th>LogFileName</th>
+                                <td>log1</td>
+                            </tr>
+                            <tr>
+                                <th>LogFileDate</th>
+                                <td>1/1/2017</td>
+
+                            </tr>
+                            <tr>
+                                <th>LogFileSize</th>
+                                <td>1kb</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p><a class="btn btn-default" href="~/FileLogs/Index">Download Log &#9660;</a></p>
+                <p><a class="btn btn-default" href="~/FileLogs/Index">Archive Log &#9660;</a></p>
+            </div>
 
             <hr />
             <footer>
@@ -138,7 +169,7 @@
                 6: {
                     sorter: false
                 },
-                9: { 
+                9: {
                     sorter: false
                 }
             }
