@@ -31,17 +31,26 @@ namespace CIT275_Back_end_interface.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(FormCollection formCollection)
+        [ValidateAntiForgeryToken]
+        public ActionResult UploadFile(HttpPostedFileBase uploadedFile)
         {
-            ProcessFiles();
+            if (uploadedFile != null && uploadedFile.ContentLength > 0 &&
+                (Path.GetExtension(uploadedFile.FileName) == ".log" || Path.GetExtension(uploadedFile.FileName) == ".txt"))
+            {
+                string fileName = Path.GetFileName(uploadedFile.FileName);
+                //string path = Path.Combine(Server.MapPath("~/App_Data/Uploads"), fileName);
+                string path = Path.Combine(@"C:\TempData\", fileName);
+                uploadedFile.SaveAs(path);
+            }
 
-            //FEEDBACK + COMPARISON
-
+            //TODO: Give feedback to page
+            
             return RedirectToAction("Index");
         }
 
-        [NonAction]
-        public void ProcessFiles()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ProcessFiles(FormCollection collection)
         {
             // REMOVE AT LATER TIME
             // REMOVE AT LATER TIME
@@ -61,6 +70,8 @@ namespace CIT275_Back_end_interface.Controllers
                 DownloadFile(ftpAddress, credential, file);
                 MoveFile(ftpAddress, credential, file);
             }
+
+            return RedirectToAction("Index");
         }
 
         [NonAction]
@@ -74,9 +85,19 @@ namespace CIT275_Back_end_interface.Controllers
             Stream responseStream = response.GetResponseStream();
 
             StreamReader sr = new StreamReader(responseStream);
-
-            FileStream file = new FileStream(@"C:\Users\jacobs33\" + fileName, FileMode.Create);
-            responseStream.CopyTo(file);
+            
+            try
+            {
+                FileStream file = new FileStream(@"C:\TempData\" + fileName, FileMode.Create);
+                responseStream.CopyTo(file);
+            }
+            catch (DirectoryNotFoundException de)
+            {
+                Directory.CreateDirectory(@"C:\TempData\");
+                FileStream file = new FileStream(@"C:\TempData\" + fileName, FileMode.Create);
+                responseStream.CopyTo(file);
+            }            
+            
         }
 
         [NonAction]

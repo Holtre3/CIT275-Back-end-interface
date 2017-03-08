@@ -2,22 +2,81 @@
     ViewBag.Title = "File Processing";
 }
 
-<h2>Files</h2>
-
-@using (Html.BeginForm())
-{
-    <div id="FilterSearch" class="form-horizontal">
-        <div class="form-group">
-            <input type="submit" value="Process Files" class="btn col-md-2 col-md-offset-2" />
-        </div>
-    </div>
-}
-
-<br />
-
-<ol>
-    @foreach (var file in ViewBag.FileList)
-    {
-        <li>@file</li>
+<style>
+    ol {
+        max-height: 700px;
+        width: 80%;
+        overflow-y: auto;
+        list-style-type: none;
+        padding: 0;
     }
-</ol>
+        ol li {
+            padding: 2px;
+        }
+        ol li:nth-child(2n){
+            background-color:#2b3e50;
+        }
+        ol li:nth-child(2n+1){
+            background-color:#3b4e60;
+        }
+    .btn {
+        border-radius: 3px;
+        background-color: #df691a;
+    }
+    input[type="file"] {
+        max-width: 100%;
+        color: white;
+    }    
+</style>
+
+<h2>FTP &amp; File Management</h2>
+
+<div id="fileList" class="col-md-6">
+    <h3>FTP File Queue</h3>
+    @using (Html.BeginForm("ProcessFiles", "Ftp", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div id="ProcessFiles" class="">            
+            <div class="form-group" >
+                <input type="submit" value="Process Files" class="btn"/>
+            </div>
+        </div>
+    }
+
+    <ol>
+        @foreach (var file in ViewBag.FileList)
+        {
+            <li>@file</li>
+        }
+    </ol>
+</div>
+
+<div class="col-md-6">
+    
+</div>
+
+<div class="col-md-6">
+    <h3>Manual Upload</h3>
+
+    @using (Html.BeginForm("UploadFile", "Ftp", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div id="FileSelector" class="">
+            <div class="form-group">
+                <input name="uploadedFile" type="file" accept=".txt,.log" required/>
+            </div>
+        </div>
+
+        <div id="UploadFile" class="">
+            <div class="form-group">
+                <input type="submit" value="Upload" class="btn" />
+            </div>
+        </div>
+    }
+
+    <p>@ViewBag.Message</p>
+</div>
+
+<div class="clearfix"></div>
