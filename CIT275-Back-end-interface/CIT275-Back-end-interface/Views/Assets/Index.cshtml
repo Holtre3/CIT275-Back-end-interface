@@ -1,13 +1,15 @@
 ﻿@model IEnumerable<CIT275_Back_end_interface.Models.Asset>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Assets";
 }
 
-<h2>Index</h2>
+<h2>Assets</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Add New Asset", "Create")
+    <br />
+    @Html.ActionLink("Add New Asset Type", "Index", "AssetTypes")
 </p>
 <table class="table">
     <tr>
