@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.IO;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace CIT275_Back_end_interface.Controllers
 {
@@ -44,7 +45,7 @@ namespace CIT275_Back_end_interface.Controllers
             }
 
             //TODO: Give feedback to page
-            
+
             return RedirectToAction("Index");
         }
 
@@ -74,6 +75,34 @@ namespace CIT275_Back_end_interface.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
+        public async Task<JsonResult> ProcessFile(string fileName)
+        {
+            // REMOVE AT LATER TIME
+            // REMOVE AT LATER TIME
+            string ftpAddress = "home200935066.1and1-data.host";
+            string user = "u44756264-NMC";
+            string password = "NMCdr0ne";
+            // REMOVE AT LATER TIME
+            // REMOVE AT LATER TIME
+
+            var request = (FtpWebRequest)WebRequest.Create($"ftp://{ftpAddress}/");
+            NetworkCredential credential = new NetworkCredential(user, password);
+
+            try
+            {
+                DownloadFile(ftpAddress, credential, fileName);
+                MoveFile(ftpAddress, credential, fileName);
+            }
+            catch (Exception)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json("Upload failed");
+            }
+
+            return Json("File uploaded successfully");
+        }
+
         [NonAction]
         static void DownloadFile(string ftpAddress, NetworkCredential credential, string fileName)
         {
@@ -85,7 +114,7 @@ namespace CIT275_Back_end_interface.Controllers
             Stream responseStream = response.GetResponseStream();
 
             StreamReader sr = new StreamReader(responseStream);
-            
+
             try
             {
                 FileStream file = new FileStream(@"C:\TempData\" + fileName, FileMode.Create);
@@ -96,8 +125,8 @@ namespace CIT275_Back_end_interface.Controllers
                 Directory.CreateDirectory(@"C:\TempData\");
                 FileStream file = new FileStream(@"C:\TempData\" + fileName, FileMode.Create);
                 responseStream.CopyTo(file);
-            }            
-            
+            }
+
         }
 
         [NonAction]
@@ -113,7 +142,7 @@ namespace CIT275_Back_end_interface.Controllers
         [NonAction]
         public List<string> ListDirectory(string ftpAddress, NetworkCredential credential)
         {
-             var files = new List<string>();
+            var files = new List<string>();
 
             var request = (FtpWebRequest)WebRequest.Create($"ftp://{ftpAddress}/");
             request.Credentials = credential;

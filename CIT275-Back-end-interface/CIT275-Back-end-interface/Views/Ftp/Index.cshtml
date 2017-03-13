@@ -26,7 +26,7 @@
     input[type="file"] {
         max-width: 100%;
         color: white;
-    }    
+    }
 </style>
 
 <h2>FTP &amp; File Management</h2>
@@ -35,25 +35,25 @@
     <h3>FTP File Queue</h3>
     @using (Html.BeginForm("ProcessFiles", "Ftp", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
-        @Html.AntiForgeryToken()
+    @Html.AntiForgeryToken()
 
-        <div id="ProcessFiles" class="">            
-            <div class="form-group" >
-                <input type="submit" value="Process Files" class="btn"/>
-            </div>
+    <div id="ProcessFiles" class="">
+        <div class="form-group">
+            <input type="submit" value="Process Files" class="btn" />
         </div>
+    </div>
     }
 
-    <ol>
+    <ol id="fileList">
         @foreach (var file in ViewBag.FileList)
         {
-            <li>@file</li>
+        <li>@file</li>
         }
     </ol>
 </div>
 
 <div class="col-md-6">
-    
+
 </div>
 
 <div class="col-md-6">
@@ -61,22 +61,54 @@
 
     @using (Html.BeginForm("UploadFile", "Ftp", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
-        @Html.AntiForgeryToken()
+    @Html.AntiForgeryToken()
 
-        <div id="FileSelector" class="">
-            <div class="form-group">
-                <input name="uploadedFile" type="file" accept=".txt,.log" required/>
-            </div>
+    <div id="FileSelector" class="">
+        <div class="form-group">
+            <input name="uploadedFile" type="file" accept=".txt,.log" required />
         </div>
+    </div>
 
-        <div id="UploadFile" class="">
-            <div class="form-group">
-                <input type="submit" value="Upload" class="btn" />
-            </div>
+    <div id="UploadFile" class="">
+        <div class="form-group">
+            <input type="submit" value="Upload" class="btn" />
         </div>
+    </div>
     }
 
     <p>@ViewBag.Message</p>
 </div>
 
 <div class="clearfix"></div>
+
+<div id="asyncProcess" class="">
+    <div class="form-group">
+        <input type="submit" value="Process Files Ajax" class="btn" />
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $("#asyncProcess").click(function () {
+        //add to-be-processed images
+        //process each file
+        $("#fileList li").each(function () {
+            var fileName = $(this).text();
+            $.ajax({
+                url: '@Url.Action("ProcessFile", "Ftp")',
+                type: 'POST',
+                async: false,
+                data: {
+                    fileName: fileName
+                }, success: function (data) {
+                    //change image to checkmark
+                }, error: function (event, jqXHR, ajaxSettings, thrownError) {
+                    alert("There was an error processing " + fileName);
+                    //change image to error icon
+                }
+            });
+        });
+    });
+
+
+</script>
