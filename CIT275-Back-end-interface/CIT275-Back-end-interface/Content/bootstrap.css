@@ -2324,12 +2324,11 @@ th {
 .table-striped > tbody > tr:nth-of-type(odd) {
   background-color: #4e5d6c;
 }
-.table-striped > tbody > tr:nth-of-type(even) {
-  background-color: #818589;
-  color: #000000;
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: #4e5d6c;
 }
 .table-hover > tbody > tr:hover {
-  background-color: #333333;
+  background-color: #000000;
   color: #ffffff;
 }
 table col[class*="col-"] {
