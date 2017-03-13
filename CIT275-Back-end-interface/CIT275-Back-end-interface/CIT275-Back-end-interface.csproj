@@ -193,6 +193,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AssetsController.cs" />
+    <Compile Include="Controllers\AssetTypesController.cs" />
     <Compile Include="Controllers\ClientsController.cs" />
     <Compile Include="Controllers\FileLogsController.cs" />
     <Compile Include="Controllers\FtpController.cs" />
@@ -226,6 +228,10 @@
     <Compile Include="ViewModels\RolesViewModels.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\aspnet-CIT275-Back-end-interface-20170215124648.mdf" />
+    <Content Include="App_Data\aspnet-CIT275-Back-end-interface-20170215124648_log.ldf">
+      <DependentUpon>aspnet-CIT275-Back-end-interface-20170215124648.mdf</DependentUpon>
+    </Content>
     <Content Include="Assets\asc.gif" />
     <Content Include="Assets\bg.gif" />
     <Content Include="Assets\desc.gif" />
@@ -239,7 +245,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Images\IA_Logo.png" />
+    <Content Include="Assets\IA_Logo.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -330,9 +336,19 @@
     <Content Include="Views\Roles\UserRolesView.cshtml" />
     <Content Include="Views\FileLogs\_FileLogLayout.cshtml" />
     <Content Include="Views\Ftp\Index.cshtml" />
+    <Content Include="Views\Assets\Create.cshtml" />
+    <Content Include="Views\Assets\Delete.cshtml" />
+    <Content Include="Views\Assets\Details.cshtml" />
+    <Content Include="Views\Assets\Edit.cshtml" />
+    <Content Include="Views\Assets\Index.cshtml" />
+    <Content Include="Views\AssetTypes\Create.cshtml" />
+    <Content Include="Views\AssetTypes\Delete.cshtml" />
+    <Content Include="Views\AssetTypes\Details.cshtml" />
+    <Content Include="Views\AssetTypes\Edit.cshtml" />
+    <Content Include="Views\AssetTypes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="Images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -367,7 +383,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>8152</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:8152/</IISUrl>
+          <IISUrl>http://localhost:8153/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

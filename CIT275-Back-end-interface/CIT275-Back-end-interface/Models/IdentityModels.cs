@@ -81,8 +81,8 @@ namespace CIT275_Back_end_interface.Models
             return new ApplicationDbContext();
         }
         public DbSet<Client> Clients { get; set; }
-        DbSet<AssetType> AssetTypes { get; set; }
-        DbSet<Asset> Assets { get; set; }
+        public DbSet<AssetType> AssetTypes { get; set; }
+        public DbSet<Asset> Assets { get; set; }
         DbSet<ClientAsset> ClientAssets {get; set;}
         public DbSet<FileLog> FileLogs { get; set; }
         DbSet<TransactionLog> TransactionLogs { get; set; }

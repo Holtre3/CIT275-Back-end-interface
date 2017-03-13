@@ -29,12 +29,13 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="../Home/Index"><img src="~/Images/IA_Logo.png" alt="Interactive Aerial Logo" height="44" width="145" /></a>
+                <a href="../Home/Index"><img src="~/Assets/IA_Logo.png" alt="Interactive Aerial Logo" height="44" width="145" /></a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Clients", "Index", "Clients/Index")</li>
                     <li>@Html.ActionLink("Log Files", "Index", "FileLogs/Index")</li>
+                    <li>@Html.ActionLink("Drones", "Index", "Assets/Index")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
