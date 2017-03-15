@@ -60,9 +60,14 @@ table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSo
     background-color: #8dbdd8;
 }
 
-a.logOption {
+.logOption {
     color: #3c3c3c;
     background-color: transparent;
     border-color: transparent;
     cursor: pointer;
-} 
+}
+
+.dropdown-menu
+{
+    z-index: 100000;
+}
