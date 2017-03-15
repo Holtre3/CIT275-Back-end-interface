@@ -95,7 +95,7 @@
                                     @Html.DisplayFor(modelItem => item.AssetID)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Status)
+                                    @formatStatus(@Html.DisplayFor(modelItem => item.Status).ToString())
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.DeleteInd)
@@ -189,6 +189,27 @@
 
 @helper formatStatus(string s)
 {
+    string labelFormat = "label-default";
 
+    switch (s)
+    {
+        case "OK":
+            labelFormat = "label-success";
+            break;
+
+        case "Processing":
+            labelFormat = "label-warning";
+            break;
+
+        case "Created":
+            labelFormat = "label-info";
+            break;
+
+        case "Error":
+            labelFormat = "label-danger";
+            break;
+    }
+
+    <span class="label @labelFormat">@s</span>
 }
 
