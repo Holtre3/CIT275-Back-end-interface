@@ -13,25 +13,9 @@
             <div class="table-responsive">
                 <table class="table table-striped table-hover">
                     <thead>
-                        <tr>
-                            <th>ClientID</th>
-                            <th>ClientName</th>
-                        </tr>
                     </thead>
 
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Walter Corp.</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>RIP Inc.</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Corn</td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -44,7 +28,7 @@
 
             <p> @Html.ActionLink("Create New", "Create") </p>
             <div class="table-responsive">
-                <table id="logTable" class="table table-striped tablesorter">
+                <table id="logTable" class="table table-striped table-hover tablesorter">
                     <thead>
                         <tr>
                             <th>
@@ -75,6 +59,7 @@
                                 @Html.DisplayNameFor(model => model.CreateDate)
                             </th>
                             <th></th>
+                            <th></th>
                         </tr>
                     </thead>
 
@@ -95,7 +80,7 @@
                                     @Html.DisplayFor(modelItem => item.AssetID)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Status)
+                                    @formatStatus(@Html.DisplayFor(modelItem => item.Status).ToString())
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.DeleteInd)
@@ -110,9 +95,19 @@
                                     @Html.DisplayFor(modelItem => item.CreateDate)
                                 </td>
                                 <td>
-                                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-                                    @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-                                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                                    <div class="btn-group">
+                                        <a class="logOption dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="glyphicon glyphicon-option-vertical"></span>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li>@Html.ActionLink("Edit", "Edit", new { id = item.ID })</li>
+                                            <li>@Html.ActionLink("Details", "Details", new { id = item.ID })</li>
+                                            <li>@Html.ActionLink("Delete", "Delete", new { id = item.ID })</li>
+                                        </ul>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a class="logOption"><span class="glyphicon glyphicon-download-alt"></span></a>
                                 </td>
                             </tr>
                         }
@@ -147,8 +142,8 @@
                         </tbody>
                     </table>
                 </div>
-                <p><a class="btn btn-default" href="~/FileLogs/Index">Download Log &#9660;</a></p>
-                <p><a class="btn btn-default" href="~/FileLogs/Index">Archive Log &#9660;</a></p>
+                <p><a class="btn btn-success" href="~/FileLogs/Index">Download Log <span class="glyphicon glyphicon-download-alt"></span></a></p>
+                <p><a class="btn btn-warning" href="~/FileLogs/Index">Archive Log</a></p>
             </div>
 
             <hr />
@@ -171,6 +166,9 @@
                 },
                 9: {
                     sorter: false
+                },
+                10: {
+                    sorter: false
                 }
             }
         });
@@ -179,6 +177,27 @@
 
 @helper formatStatus(string s)
 {
+    string labelFormat = "label-default";
 
+    switch (s)
+    {
+        case "OK":
+            labelFormat = "label-success";
+            break;
+
+        case "Processing":
+            labelFormat = "label-warning";
+            break;
+
+        case "Created":
+            labelFormat = "label-info";
+            break;
+
+        case "Error":
+            labelFormat = "label-danger";
+            break;
+    }
+
+    <span class="label @labelFormat">@s</span>
 }
 
