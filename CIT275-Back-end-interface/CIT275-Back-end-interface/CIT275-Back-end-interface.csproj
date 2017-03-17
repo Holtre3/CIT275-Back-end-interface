@@ -201,6 +201,8 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="DAL\ClientDataRepos.cs" />
+    <Compile Include="DAL\Repos.cs" />
     <Compile Include="DAL\UsersAndRolesRepository.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -216,6 +218,10 @@
     <Compile Include="Migrations\201703150208183_dar.cs" />
     <Compile Include="Migrations\201703150208183_dar.Designer.cs">
       <DependentUpon>201703150208183_dar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703170327597_usertype.cs" />
+    <Compile Include="Migrations\201703170327597_usertype.Designer.cs">
+      <DependentUpon>201703170327597_usertype.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -350,6 +356,14 @@
     <Content Include="Views\AssetTypes\Details.cshtml" />
     <Content Include="Views\AssetTypes\Edit.cshtml" />
     <Content Include="Views\AssetTypes\Index.cshtml" />
+    <Content Include="Views\Account\ChangePassword.cshtml" />
+    <Content Include="Views\Account\Create.cshtml" />
+    <Content Include="Views\Account\Delete.cshtml" />
+    <Content Include="Views\Account\Edit.cshtml" />
+    <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Views\Account\UserProfile.cshtml" />
+    <Content Include="Views\Account\View.cshtml" />
+    <Content Include="Views\Account\ErrorPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Images\" />
@@ -370,6 +384,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201703150208183_dar.resx">
       <DependentUpon>201703150208183_dar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703170327597_usertype.resx">
+      <DependentUpon>201703170327597_usertype.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

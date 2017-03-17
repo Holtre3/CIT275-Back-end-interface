@@ -81,6 +81,8 @@ namespace Controllers
             return View(model);
 
         }
+
+
         public ActionResult UserDetail(string id)
         {
             if (IsAdmin() == false) { return NotAdmin(); }

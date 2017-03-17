@@ -2,13 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Mvc;
 using System.Data.SqlTypes;
-using Microsoft.AspNet.Identity;
-using CIT275_Back_end_interface;
+using System.Linq;
 using ViewModels;
 
 namespace DAL
@@ -21,31 +16,15 @@ namespace DAL
     /// TODO: Eventually move CRUD here. For now handle complex queries.
     /// </summary>
 
-    partial class DataRepository
+    public partial class DataRepository
     {
-        ApplicationDbContext _dc = new ApplicationDbContext();
+     
         private class u
         {
             public string UserID { get; set; }
         }
 
-        private class clID
-        {
-            public string UserID { get; set; }
-            public int ClientID { get; set; }
-
-        }
-        public int GetClientByUID(string uid)
-        {
-            var idParam = new SqlParameter
-            {
-                ParameterName = "uid",
-                Value = uid
-            };
-            clID rc = _dc.Database.SqlQuery<clID>("Select top 1 UserID, ClientID, ContactID from ClientUsers where UserId = @uid", idParam).SingleOrDefault();
-            return rc.ClientID;
-
-        }
+      
 
         #region ROLES
         public string GetRoleByName(string role)

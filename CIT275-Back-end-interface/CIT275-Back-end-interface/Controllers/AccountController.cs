@@ -546,6 +546,10 @@ namespace CIT275_Back_end_interface.Controllers
                 // Don't reveal that the user does not exist or is not confirmed
                 return View("ForgotPasswordConfirmation");
             }
+
+            ViewBag.CustList = new SelectList(_dc.GetClientList(), "ClientID", "CompanyName", null);
+
+
             EditUserViewModel model = new EditUserViewModel();
             model.Id = user.Id;
             model.Address = user.Address;
@@ -617,51 +621,70 @@ namespace CIT275_Back_end_interface.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult> ChangePassword(string Id)
+        {
+            ApplicationUser user = await UserManager.FindByIdAsync(Id);
 
-        //[HttpPost]
-        //[Authorize(Roles = "Admin")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<ActionResult> ChangePassword(SetUserPasswordViewModel model)
-        //{
-        //    ApplicationUser user = await UserManager.FindByIdAsync(model.Id);
-        //    if (user == null)
-        //    {
-        //        return ErrorPage("Invalid Operation tryning to set password.");
+            if (user == null || user.Email == null || user.UserName == null)
+            {
+                return RedirectToAction("ErrorPage", new { msg = "Invalid Operation trying to set password." });
 
-        //    }
-        //    user.PasswordHash = UserManager.PasswordHasher.HashPassword(model.Password);
-        //    IdentityResult result = await UserManager.UpdateAsync(user);
-        //    if (!result.Succeeded)
-        //    {
+            }
+            SetUserPasswordViewModel model = new SetUserPasswordViewModel();
+            model.Id = user.Id;
+            model.FirstName = user.FirstName;
+            model.LastName = user.LastName;
+            model.Email = user.Email;
 
-        //        AddErrors(result);
-        //        string msg = "";
-        //        foreach (var e in result.Errors)
-        //        {
-        //            msg += e.ToString();
-        //        }
-        //        return ErrorPage(msg);
-        //    }
-        //    else
-        //    {
-        //        //TODO: Notify User their email has changed - I want this to be optional
-        //        //utils.EmailSender eSender = new utils.EmailSender();
+            return View(model);
+        }
 
-        //        //string sBody = eSender.GetNotifyMsgBody("Your account has changed for Carries Frugal Living website (CarriesFrugalLiving.com)"
-        //        //    , "If you received this message unexpectedly please contact us. For security reasons we will not provide a link, but simply access the main site and click Contact Us. Thank you.");
-        //        //var e = eSender.Send(user.Email, "Account changed at CarriesFrugalLiving.com", sBody, true, null);
-        //        //eSender = null;
-        //        //if (e.Length > 0 )
-        //        //{
-        //        //    ViewBag.ErrMsg = e; // to show error
-        //        //} else
-        //        //{
-        //        //    return RedirectToAction("Index");
-        //        //}
-        //    }
 
-        //    return RedirectToAction("Index");
-        //}
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangePassword(SetUserPasswordViewModel model)
+        {
+            ApplicationUser user = await UserManager.FindByIdAsync(model.Id);
+            if (user == null)
+            {
+                return ErrorPage("Invalid Operation tryning to set password.");
+
+            }
+            user.PasswordHash = UserManager.PasswordHasher.HashPassword(model.Password);
+            IdentityResult result = await UserManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+
+                AddErrors(result);
+                string msg = "";
+                foreach (var e in result.Errors)
+                {
+                    msg += e.ToString();
+                }
+                return ErrorPage(msg);
+            }
+            else
+            {
+                //TODO: Notify User their email has changed - I want this to be optional
+                //utils.EmailSender eSender = new utils.EmailSender();
+
+                //string sBody = eSender.GetNotifyMsgBody("Your account has changed for Carries Frugal Living website (CarriesFrugalLiving.com)"
+                //    , "If you received this message unexpectedly please contact us. For security reasons we will not provide a link, but simply access the main site and click Contact Us. Thank you.");
+                //var e = eSender.Send(user.Email, "Account changed at CarriesFrugalLiving.com", sBody, true, null);
+                //eSender = null;
+                //if (e.Length > 0 )
+                //{
+                //    ViewBag.ErrMsg = e; // to show error
+                //} else
+                //{
+                //    return RedirectToAction("Index");
+                //}
+            }
+
+            return RedirectToAction("Index");
+        }
 
         #endregion
 
