@@ -13,7 +13,13 @@ using ViewModels;
 
 namespace DAL
 {
-
+    /// <summary>
+    /// DataRepository is used for providing data access methods in a central place 
+    /// and to maintain seperation of concerns, making it easier to swap out data 
+    /// storage method if necessary.
+    /// 
+    /// TODO: Eventually move CRUD here. For now handle complex queries.
+    /// </summary>
 
     partial class DataRepository
     {
