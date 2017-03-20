@@ -17,33 +17,29 @@
         }
         ol li:nth-child(2n+1){
         }
-    .btn {
-        border-radius: 3px;
-    }
     input[type="file"] {
         max-width: 100%;
+    }
+    #fileList ol li span {
+        padding: 3px;
     }
 </style>
 
 <h2>FTP &amp; File Management</h2>
 
-<div id="fileList" class="col-md-6">
+<div id="fileListDiv" class="col-md-6">
     <h3>FTP File Queue</h3>
-    @using (Html.BeginForm("ProcessFiles", "Ftp", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
-    {
-    @Html.AntiForgeryToken()
-
+ 
     <div id="ProcessFiles" class="">
         <div class="form-group">
-            <input type="submit" value="Process Files" class="btn" />
+            <input type="button" value="Process Files" class="btn btn-default" />
         </div>
     </div>
-    }
 
-    <ol id="fileList">
+    <ol id="fileList" class="list-group">
         @foreach (var file in ViewBag.FileList)
         {
-        <li>@file</li>
+        <li class="list-group-item"><span class=""></span>@file</li>
         }
     </ol>
 </div>
@@ -67,7 +63,7 @@
 
     <div id="UploadFile" class="">
         <div class="form-group">
-            <input type="submit" value="Upload" class="btn" />
+            <input type="submit" value="Upload" class="btn btn-default" />
         </div>
     </div>
     }
@@ -77,19 +73,15 @@
 
 <div class="clearfix"></div>
 
-<div id="asyncProcess" class="">
-    <div class="form-group">
-        <input type="submit" value="Process Files Ajax" class="btn" />
-    </div>
-</div>
-
 <script type="text/javascript">
 
-    $("#asyncProcess").click(function () {
+    $("#ProcessFiles").click(function () {
         //add to-be-processed images
         //process each file
         $("#fileList li").each(function () {
+            $(this).children('span').addClass('glyphicon glyphicon-transfer');
             var fileName = $(this).text();
+
             $.ajax({
                 url: '@Url.Action("ProcessFile", "Ftp")',
                 type: 'POST',
@@ -98,11 +90,13 @@
                     fileName: fileName
                 }, success: function (data) {
                     //change image to checkmark
+                    $(this).children('span').removeClass('glyphicon-transfer').addClass('glyphicon-saved');
                 }, error: function (event, jqXHR, ajaxSettings, thrownError) {
                     alert("There was an error processing " + fileName);
                     //change image to error icon
+                    $(this).children('span').removeClass().addClass('glyphicon glyphicon-warning-sign');
                 }
-            });
+            });            
         });
     });
 

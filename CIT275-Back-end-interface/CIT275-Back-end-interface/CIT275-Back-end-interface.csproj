@@ -366,6 +366,7 @@
     <Content Include="Views\Account\ErrorPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\LogFiles\" />
     <Folder Include="Images\" />
   </ItemGroup>
   <ItemGroup>

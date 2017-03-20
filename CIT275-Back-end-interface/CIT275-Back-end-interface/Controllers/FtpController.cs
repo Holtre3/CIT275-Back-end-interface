@@ -50,32 +50,6 @@ namespace CIT275_Back_end_interface.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult ProcessFiles(FormCollection collection)
-        {
-            // REMOVE AT LATER TIME
-            // REMOVE AT LATER TIME
-            string ftpAddress = "home200935066.1and1-data.host";
-            string user = "u44756264-NMC";
-            string password = "NMCdr0ne";
-            // REMOVE AT LATER TIME
-            // REMOVE AT LATER TIME
-
-            var request = (FtpWebRequest)WebRequest.Create($"ftp://{ftpAddress}/");
-            NetworkCredential credential = new NetworkCredential(user, password);
-
-            List<string> filesToProcess = ListDirectory(ftpAddress, credential);
-
-            foreach (string file in filesToProcess)
-            {
-                DownloadFile(ftpAddress, credential, file);
-                MoveFile(ftpAddress, credential, file);
-            }
-
-            return RedirectToAction("Index");
-        }
-
-        [HttpPost]
         public async Task<JsonResult> ProcessFile(string fileName)
         {
             // REMOVE AT LATER TIME
@@ -117,13 +91,13 @@ namespace CIT275_Back_end_interface.Controllers
 
             try
             {
-                FileStream file = new FileStream(@"C:\TempData\" + fileName, FileMode.Create);
+                FileStream file = new FileStream(@"~\App_Data\LogFiles\" + fileName, FileMode.Create);
                 responseStream.CopyTo(file);
             }
             catch (DirectoryNotFoundException de)
             {
-                Directory.CreateDirectory(@"C:\TempData\");
-                FileStream file = new FileStream(@"C:\TempData\" + fileName, FileMode.Create);
+                Directory.CreateDirectory(@"~\App_Data\LogFiles\");
+                FileStream file = new FileStream(@"~\App_Data\LogFiles\" + fileName, FileMode.Create);
                 responseStream.CopyTo(file);
             }
 
@@ -167,5 +141,7 @@ namespace CIT275_Back_end_interface.Controllers
             ViewBag.FileList = files;
             return files;
         }
+
+        //TODO: Create a file log record
     }
 }
