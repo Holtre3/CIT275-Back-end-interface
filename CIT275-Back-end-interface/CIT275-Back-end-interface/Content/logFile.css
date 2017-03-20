@@ -67,7 +67,32 @@ table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSo
     cursor: pointer;
 }
 
-.dropdown-menu
-{
+.dropdownMenu {
     z-index: 100000;
+}
+
+/* DROPDOWN TREE LIST */
+
+.treeList {
+    list-style-type: none;
+}
+
+.treeList li {
+
+}
+
+.treeListSub {
+    padding-left: 10px;
+}
+
+.treeListSub li {
+
+}
+
+.treeOff {
+    display: none;
+}
+
+.treeOn {
+    display: block;
 }

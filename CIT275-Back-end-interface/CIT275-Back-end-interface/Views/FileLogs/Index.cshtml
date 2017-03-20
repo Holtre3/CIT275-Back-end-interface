@@ -10,12 +10,18 @@
         <div class="col-sm-3 col-md-2 logSidebarLeft">
             <h2 class="sub-header">Clients</h2>
 
-            @*@Html.Partial("ClientListView", new List<CIT275_Back_end_interface.Models.Client>())*@
-
-            <ul>
+            <ul class="treeList treeOff">
                 @foreach (var item in Model.Clients)
                 {
-                    <li><a>@Html.DisplayFor(modelItem => item.CompanyName)</a></li>
+                    <li>
+                        <a>@Html.DisplayFor(modelItem => item.CompanyName)</a>
+                        <ul class="treeListSub">
+                            @foreach (var item2 in Model.Assets)
+                            {
+                                @*Return asset*@
+                            }
+                        </ul>
+                    </li>
                 }
             </ul>
 
@@ -108,7 +114,7 @@
                                         <a class="logOption dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <span class="glyphicon glyphicon-option-vertical"></span>
                                         </a>
-                                        <ul class="dropdown-menu">
+                                        <ul class="dropdownMenu">
                                             <li>@Html.ActionLink("Edit", "Edit", new { id = item.ID })</li>
                                             <li>@Html.ActionLink("Details", "Details", new { id = item.ID })</li>
                                             <li>@Html.ActionLink("Delete", "Delete", new { id = item.ID })</li>
