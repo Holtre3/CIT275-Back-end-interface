@@ -364,11 +364,9 @@
     <Content Include="Views\Account\UserProfile.cshtml" />
     <Content Include="Views\Account\View.cshtml" />
     <Content Include="Views\Account\ErrorPage.cshtml" />
-<<<<<<< HEAD
     <Content Include="Views\FileLogs\ClientListView.cshtml" />
-=======
     <Content Include="Views\Ftp\Configuration.cshtml" />
->>>>>>> origin/master
+
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\LogFiles\" />
