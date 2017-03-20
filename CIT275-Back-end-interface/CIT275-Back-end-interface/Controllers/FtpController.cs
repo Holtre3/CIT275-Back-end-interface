@@ -6,11 +6,17 @@ using System.Web.Mvc;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace CIT275_Back_end_interface.Controllers
 {
     public class FtpController : Controller
     {
+        const int HASH_SIZE = 32;
+        static string _Pwd = "NMCdr0ne";
+        static byte[] _Salt = new byte[] { 0x45, 0xF1, 0x61, 0x6e, 0x20, 0x00, 0x65, 0x64, 0x76, 0x65, 0x64, 0x03, 0x76 };
+
         [HttpGet]
         public ActionResult Index()
         {
@@ -141,6 +147,164 @@ namespace CIT275_Back_end_interface.Controllers
             ViewBag.FileList = files;
             return files;
         }
+
+        [HttpGet]
+        public ActionResult Configuration()
+        {
+            string ftpInformation;
+            string[] ftpInfoArray = new String[3];
+
+            try
+            {
+                using (StreamReader sr = new StreamReader(Server.MapPath(@"~\FtpConfig.config"))){
+                    ftpInformation = sr.ReadToEnd();
+                }
+
+                byte[] cipherText = Encoding.ASCII.GetBytes(ftpInformation);
+                byte[] decryptedInfo = Decrypt(_Pwd, _Salt, cipherText);
+
+                ftpInfoArray = Encoding.ASCII.GetString(decryptedInfo).Split('|');
+                
+            }
+            catch (FileNotFoundException)
+            {
+                ftpInfoArray[0] = "";
+                ftpInfoArray[1] = "";
+                ftpInfoArray[2] = "";
+            }
+
+            ViewBag.Hostname = ftpInfoArray[0];
+            ViewBag.Username = ftpInfoArray[1];
+            ViewBag.Password = ftpInfoArray[2];
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Configuration(FormCollection collection)
+        {
+            string hostname = Convert.ToString(collection["hostname"]);
+            string username = Convert.ToString(collection["username"]);
+            string password = Convert.ToString(collection["password"]);
+            byte[] saveString = Encoding.ASCII.GetBytes(hostname + "|" + username + "|" + password);
+            byte[] ftpInformation = Encrypt(_Pwd, _Salt, saveString);
+
+            //save encrypted ftp information
+            try
+            {
+                using (StreamWriter sw = new StreamWriter(Server.MapPath(@"~\FtpConfig.config")))
+                {
+                    sw.Write(Encoding.ASCII.GetString(ftpInformation));
+                }
+            }
+            catch (DirectoryNotFoundException)
+            {
+
+            }
+            catch (FileNotFoundException)
+            {
+
+            }
+            
+
+            return View();
+        }
+
+
+
+        [NonAction]
+        public static byte[] Encrypt(string password, byte[] passwordSalt, byte[] plainText)
+        {
+            // Construct message with hash
+            var msg = new byte[HASH_SIZE + plainText.Length];
+            var hash = ComputeHash(plainText, 0, plainText.Length);
+            Buffer.BlockCopy(hash, 0, msg, 0, HASH_SIZE);
+            Buffer.BlockCopy(plainText, 0, msg, HASH_SIZE, plainText.Length);
+
+            // Encrypt
+            using (var aes = CreateAes(password, passwordSalt))
+            {
+                aes.GenerateIV();
+                using (var enc = aes.CreateEncryptor())
+                {
+
+                    var encBytes = enc.TransformFinalBlock(msg, 0, msg.Length);
+                    // Prepend IV to result
+                    var res = new byte[aes.IV.Length + encBytes.Length];
+                    Buffer.BlockCopy(aes.IV, 0, res, 0, aes.IV.Length);
+                    Buffer.BlockCopy(encBytes, 0, res, aes.IV.Length, encBytes.Length);
+                    return res;
+                }
+            }
+        }
+        [NonAction]
+        public static byte[] Decrypt(string password, byte[] passwordSalt, byte[] cipherText)
+        {
+            using (var aes = CreateAes(password, passwordSalt))
+            {
+                var iv = new byte[aes.IV.Length];
+                Buffer.BlockCopy(cipherText, 0, iv, 0, iv.Length);
+                aes.IV = iv; // Probably could copy right to the byte array, but that's not guaranteed
+
+                using (var dec = aes.CreateDecryptor())
+                {
+                    var decBytes = dec.TransformFinalBlock(cipherText, iv.Length, cipherText.Length - iv.Length);
+
+                    // Verify hash
+                    var hash = ComputeHash(decBytes, HASH_SIZE, decBytes.Length - HASH_SIZE);
+                    var existingHash = new byte[HASH_SIZE];
+                    Buffer.BlockCopy(decBytes, 0, existingHash, 0, HASH_SIZE);
+                    if (!CompareBytes(existingHash, hash))
+                    {
+                        throw new CryptographicException("Message hash incorrect.");
+                    }
+
+                    // Hash is valid, we're done
+                    var res = new byte[decBytes.Length - HASH_SIZE];
+                    Buffer.BlockCopy(decBytes, HASH_SIZE, res, 0, res.Length);
+                    return res;
+                }
+            }
+        }
+        [NonAction]
+        static bool CompareBytes(byte[] a1, byte[] a2)
+        {
+            if (a1.Length != a2.Length) return false;
+            for (int i = 0; i < a1.Length; i++)
+            {
+                if (a1[i] != a2[i]) return false;
+            }
+            return true;
+        }
+        [NonAction]
+        static Aes CreateAes(string password, byte[] salt)
+        {
+            // Salt may not be needed if password is safe
+            if (password.Length < 8) throw new ArgumentException("Password must be at least 8 characters.", "password");
+            if (salt.Length < 8) throw new ArgumentException("Salt must be at least 8 bytes.", "salt");
+            var pdb = new PasswordDeriveBytes(password, salt, "SHA512", 129);
+            var key = pdb.GetBytes(16);
+
+            var aes = Aes.Create();
+            aes.Mode = CipherMode.CBC;
+            aes.Key = pdb.GetBytes(aes.KeySize / 8);
+            return aes;
+        }
+        [NonAction]
+        static byte[] ComputeHash(byte[] data, int offset, int count)
+        {
+            using (var sha = SHA256.Create())
+            {
+                return sha.ComputeHash(data, offset, count);
+            }
+        }
+
+
+
+
+
+
+
 
         //TODO: Create a file log record
     }
