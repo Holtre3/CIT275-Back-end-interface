@@ -364,6 +364,7 @@
     <Content Include="Views\Account\UserProfile.cshtml" />
     <Content Include="Views\Account\View.cshtml" />
     <Content Include="Views\Account\ErrorPage.cshtml" />
+    <Content Include="Views\Ftp\Configuration.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\LogFiles\" />
