@@ -14,10 +14,23 @@ namespace CIT275_Back_end_interface.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        //Partial class for filelogs, clients, and assests
+        public class ClientLogExRef
+        {
+            public IEnumerable<FileLog> Filelogs { get; set; }
+            public IEnumerable<Client> Clients { get; set; }
+            public IEnumerable<Asset> Assets { get; set; }
+        }
+
         // GET: FileLogs
         public ActionResult Index()
         {
-            return View(db.FileLogs.ToList());
+            var model = new ClientLogExRef();
+            model.Filelogs = db.FileLogs.ToList();
+            model.Clients = db.Clients.ToList();
+            model.Assets = db.Assets.ToList();
+
+            return View(model);
         }
 
         // GET: FileLogs/Details/5
@@ -114,6 +127,12 @@ namespace CIT275_Back_end_interface.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+
+        /*public ActionResult ClientListView()
+        {
+            
+            return View(db.Clients);
+        }*/
 
         protected override void Dispose(bool disposing)
         {

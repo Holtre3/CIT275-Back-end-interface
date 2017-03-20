@@ -229,7 +229,6 @@
     <Compile Include="Models\AssetType.cs" />
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\ClientAsset.cs" />
-    <Compile Include="Models\ClientLogExRef.cs" />
     <Compile Include="Models\FileLog.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -364,6 +363,7 @@
     <Content Include="Views\Account\UserProfile.cshtml" />
     <Content Include="Views\Account\View.cshtml" />
     <Content Include="Views\Account\ErrorPage.cshtml" />
+    <Content Include="Views\FileLogs\ClientListView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\LogFiles\" />
