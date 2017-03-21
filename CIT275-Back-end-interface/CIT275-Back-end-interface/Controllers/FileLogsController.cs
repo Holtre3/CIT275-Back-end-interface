@@ -28,7 +28,7 @@ namespace CIT275_Back_end_interface.Controllers
             var model = new ClientLogExRef();
             model.Filelogs = db.FileLogs.ToList();
             model.Clients = db.Clients.ToList();
-            model.Assets = db.ClientAssets.ToList();
+            //model.Assets = db.ClientAssets.ToList();
 
             return View(model);
         }

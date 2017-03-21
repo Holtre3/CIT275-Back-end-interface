@@ -238,10 +238,6 @@
     <Compile Include="ViewModels\RolesViewModels.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\aspnet-CIT275-Back-end-interface-20170215124648.mdf" />
-    <Content Include="App_Data\aspnet-CIT275-Back-end-interface-20170215124648_log.ldf">
-      <DependentUpon>aspnet-CIT275-Back-end-interface-20170215124648.mdf</DependentUpon>
-    </Content>
     <Content Include="Assets\asc.gif" />
     <Content Include="Assets\bg.gif" />
     <Content Include="Assets\desc.gif" />

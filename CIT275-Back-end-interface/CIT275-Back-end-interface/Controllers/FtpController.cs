@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using System.Security;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -14,7 +15,7 @@ namespace CIT275_Back_end_interface.Controllers
     public class FtpController : Controller
     {
         const int HASH_SIZE = 32;
-        static string _Pwd = "NMCdr0ne";
+        static string _Pwd = "NMCdr0neIA";
         static byte[] _Salt = new byte[] { 0x45, 0xF1, 0x61, 0x6e, 0x20, 0x00, 0x65, 0x64, 0x76, 0x65, 0x64, 0x03, 0x76 };
 
         [HttpGet]
@@ -22,9 +23,15 @@ namespace CIT275_Back_end_interface.Controllers
         {
             // REMOVE AT LATER TIME
             // REMOVE AT LATER TIME
-            string ftpAddress = "home200935066.1and1-data.host";
+            string[] ftpInfo = GetCredentials().Split('|');
+
+            string ftpAddress = ftpInfo[0];
+            string user = ftpInfo[1];
+            string password = ftpInfo[2];
+
+            /*string ftpAddress = "home200935066.1and1-data.host";
             string user = "u44756264-NMC";
-            string password = "NMCdr0ne";
+            string password = "NMCdr0ne";*/
             // REMOVE AT LATER TIME
             // REMOVE AT LATER TIME
 
@@ -149,10 +156,12 @@ namespace CIT275_Back_end_interface.Controllers
         }
 
         [HttpGet]
-        public ActionResult Configuration()
+        public ActionResult Configuration(string message = "")
         {
             string ftpInformation;
             string[] ftpInfoArray = new String[3];
+
+            ViewBag.Result = message;
 
             try
             {
@@ -161,10 +170,11 @@ namespace CIT275_Back_end_interface.Controllers
                 }
 
                 byte[] cipherText = Encoding.ASCII.GetBytes(ftpInformation);
-                byte[] decryptedInfo = Decrypt(_Pwd, _Salt, cipherText);
+                //byte[] decryptedInfo = Decrypt(_Pwd, _Salt, cipherText);
 
-                ftpInfoArray = Encoding.ASCII.GetString(decryptedInfo).Split('|');
-                
+                //ftpInfoArray = Encoding.ASCII.GetString(decryptedInfo).Split('|');
+                ftpInfoArray = ftpInformation.Split('|');
+
             }
             catch (FileNotFoundException)
             {
@@ -186,31 +196,56 @@ namespace CIT275_Back_end_interface.Controllers
             string hostname = Convert.ToString(collection["hostname"]);
             string username = Convert.ToString(collection["username"]);
             string password = Convert.ToString(collection["password"]);
+            string ftpInfo = hostname + "|" + username + "|" + password;
+            string result = "";
+            /*
             byte[] saveString = Encoding.ASCII.GetBytes(hostname + "|" + username + "|" + password);
             byte[] ftpInformation = Encrypt(_Pwd, _Salt, saveString);
-
+            */
             //save encrypted ftp information
             try
             {
                 using (StreamWriter sw = new StreamWriter(Server.MapPath(@"~\FtpConfig.config")))
                 {
-                    sw.Write(Encoding.ASCII.GetString(ftpInformation));
+                    //sw.Write(Encoding.ASCII.GetString(ftpInformation));
+                    sw.WriteLine(ftpInfo);
                 }
+
+                result = "Information saved!";
             }
             catch (DirectoryNotFoundException)
             {
-
+                result = "Directory not found!";
             }
             catch (FileNotFoundException)
             {
-
+                result = "File not found!";
             }
-            
 
-            return View();
+            return RedirectToAction("Configuration", "Ftp", new { message = result });
         }
 
 
+
+        [NonAction]
+        public string GetCredentials()
+        {
+            string ftpInfo;
+
+            try
+            {
+                using (StreamReader sr = new StreamReader(Server.MapPath(@"~\FtpConfig.Config")))
+                {
+                    ftpInfo = sr.ReadLine();
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                return "File Not Found";
+            }
+
+            return ftpInfo;            
+        }
 
         [NonAction]
         public static byte[] Encrypt(string password, byte[] passwordSalt, byte[] plainText)
