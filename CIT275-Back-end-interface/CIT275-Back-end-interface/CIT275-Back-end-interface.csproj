@@ -238,10 +238,6 @@
     <Compile Include="ViewModels\RolesViewModels.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\aspnet-CIT275-Back-end-interface-20170215124648.mdf" />
-    <Content Include="App_Data\aspnet-CIT275-Back-end-interface-20170215124648_log.ldf">
-      <DependentUpon>aspnet-CIT275-Back-end-interface-20170215124648.mdf</DependentUpon>
-    </Content>
     <Content Include="Assets\asc.gif" />
     <Content Include="Assets\bg.gif" />
     <Content Include="Assets\desc.gif" />
@@ -267,6 +263,7 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <None Include="Properties\PublishProfiles\InteractiveAerial - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
