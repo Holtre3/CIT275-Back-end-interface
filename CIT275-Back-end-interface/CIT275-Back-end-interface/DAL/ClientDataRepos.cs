@@ -21,17 +21,17 @@ namespace DAL
             IEnumerable<Client> model ;
 
 
-            string sql = "select * from Clients where ( CompanyName like  @company + '%'  or @company is null ) and ( City like  @city + '%'  or @city is null ) and ( State like  @state + '%'  or @state is null )  ";
+            string sql = "select * from Clients where ( CompanyName like  @company + '%'   ) and ( City like  @city + '%'   ) and ( State like  @state + '%'  )  ";
             if (string.IsNullOrWhiteSpace(company)) {
-                company = null;
+                company = "";
             }
             if (string.IsNullOrWhiteSpace(city))
             {
-                city = null;
+                city = "";
             }
             if (string.IsNullOrWhiteSpace(state))
             {
-                state = null;
+                state = "";
             }
 
             var companyParam = new SqlParameter

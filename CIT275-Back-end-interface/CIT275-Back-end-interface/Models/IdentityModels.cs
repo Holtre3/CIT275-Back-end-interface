@@ -73,7 +73,8 @@ namespace CIT275_Back_end_interface.Models
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
            // : base("DarLaptop", throwIfV1Schema: false)
-        {
+           // :  base("Azure_IA", throwIfV1Schema: false)
+         {
 
         }
 

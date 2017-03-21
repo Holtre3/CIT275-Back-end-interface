@@ -7,17 +7,22 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using CIT275_Back_end_interface.Models;
+using DAL;
 
 namespace CIT275_Back_end_interface.Controllers
 {
     public class ClientsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private DataRepository _dc = new DataRepository();
+
 
         // GET: Clients
         public ActionResult Index()
         {
-            return View(db.Clients.ToList());
+            var lst = _dc.GetClientList();
+            return View(lst);
+            // return View(db.Clients.ToList());
         }
 
         // GET: Clients/Details/5
@@ -38,6 +43,7 @@ namespace CIT275_Back_end_interface.Controllers
         // GET: Clients/Create
         public ActionResult Create()
         {
+           // @Html.DropDownListFor(m => m.ClientId, (IEnumerable<SelectListItem>)ViewBag.CustList, "--Select One--")
             return View();
         }
 
