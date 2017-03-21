@@ -240,3 +240,7 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/LaptopMigrations.zip
+/CIT275-Back-end-interface/Migrations/201703210020009_init.resx
+/CIT275-Back-end-interface/Migrations/201703210020009_init.Designer.cs
+/CIT275-Back-end-interface/Migrations/201703210020009_init.cs
