@@ -72,6 +72,7 @@ namespace CIT275_Back_end_interface.Models
     {
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
+           // : base("DarLaptop", throwIfV1Schema: false)
         {
 
         }
@@ -83,9 +84,9 @@ namespace CIT275_Back_end_interface.Models
         public DbSet<Client> Clients { get; set; }
         public DbSet<AssetType> AssetTypes { get; set; }
         public DbSet<Asset> Assets { get; set; }
-        DbSet<ClientAsset> ClientAssets {get; set;}
+        public DbSet<ClientAsset> ClientAssets {get; set;}
         public DbSet<FileLog> FileLogs { get; set; }
-        DbSet<TransactionLog> TransactionLogs { get; set; }
+        public DbSet<TransactionLog> TransactionLogs { get; set; }
 
     }
 }
