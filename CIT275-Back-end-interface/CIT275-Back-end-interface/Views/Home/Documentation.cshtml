@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewBag.Title = "Documentation";
+}
+<div class="centered">
+    <div class="jumbotron">
+        <h1>Documentation</h1>
+    </div>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="row">
+            <div class="col-md-4 col-md-offset-2">
+                <h2>Get the PDF</h2>
+                <p>
+                    Here, you will find the full PDF version of the documentation.
+                </p>
+                <p><a class="btn btn-default" href="~/Documentation/">View PDF &raquo;</a></p>
+            </div>
+            <div class="col-md-4">
+                <h2>How to...</h2>
+                <p>
+                    Learn about the main features of the sight.
+                </p>
+                <p><a class="btn btn-default" href="~/Home/Howto">How To &raquo;</a></p>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-md-4 col-md-offset-2">
+                <h2>Members</h2>
+                <p>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "btn btn-primary  " })</p>
+
+            </div>
+            <div class="col-md-4">
+
+                <p>
+                    For more information about what we do, please visit us at <a href="http://www.interactiveaerial.com/">Interactive Aerial Home Page</a>
+                </p>
+                <p>
+                    If you would like a customer service representative to call, please click the button:
+                </p>
+                <p><a class="btn btn-default" href="http://www.interactiveaerial.com/contact-us.html">Contact Us &raquo;</a></p>
+            </div>
+        </div>
+    }
+
+</div>

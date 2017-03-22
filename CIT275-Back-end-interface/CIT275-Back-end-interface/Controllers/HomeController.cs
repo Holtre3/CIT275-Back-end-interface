@@ -13,18 +13,18 @@ namespace CIT275_Back_end_interface.Controllers
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult Documentation()
         {
             
 
             return View();
         }
-
-        public ActionResult Contact()
+        public ActionResult HowTo()
         {
-            
+
 
             return View();
         }
+
     }
 }
