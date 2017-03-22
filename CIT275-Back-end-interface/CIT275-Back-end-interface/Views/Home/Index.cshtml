@@ -18,7 +18,7 @@
     @if (User.Identity.IsAuthenticated)
     {
     <div class="row">
-        <div class="col-md-4 col-md-offset-2">
+        <div class="col-md-3 col-md-offset-2">
             <h2>Clients</h2>
             <p>
                 This page will take you to a list of current clients. It will provide you the tools to create, update, view, and delete active client accounts as well as
@@ -26,12 +26,19 @@
             </p>
             <p><a class="btn btn-default" href="~/Clients/Index">View Clients &raquo;</a></p>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <h2>Logs</h2>
             <p>
                 This page will take you to a list of logs with search and filter functionality. Go here to create, update, view, delete, and download specific logs or log packages.
             </p>
             <p><a class="btn btn-default" href="~/FileLogs/Index">View Logs &raquo;</a></p>
+        </div>
+        <div class="col-md-3">
+            <h2>How To</h2>
+            <p>
+                Learn how to use the features of this website!
+            </p>
+            <p><a class="btn btn-default" href="~/Home/Documentation">How To &raquo;</a></p>
         </div>
     </div>
     }
