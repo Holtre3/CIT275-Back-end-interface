@@ -7,13 +7,13 @@ namespace CIT275_Back_end_interface.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class dar : IMigrationMetadata
+    public sealed partial class init : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(dar));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(init));
         
         string IMigrationMetadata.Id
         {
-            get { return "201703150208183_dar"; }
+            get { return "201703220043514_init"; }
         }
         
         string IMigrationMetadata.Source

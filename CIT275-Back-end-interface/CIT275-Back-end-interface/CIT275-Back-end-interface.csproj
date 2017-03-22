@@ -207,29 +207,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201703011424580_Init.cs" />
-    <Compile Include="Migrations\201703011424580_Init.Designer.cs">
-      <DependentUpon>201703011424580_Init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201703011519404_identity.cs" />
-    <Compile Include="Migrations\201703011519404_identity.Designer.cs">
-      <DependentUpon>201703011519404_identity.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201703150208183_dar.cs" />
-    <Compile Include="Migrations\201703150208183_dar.Designer.cs">
-      <DependentUpon>201703150208183_dar.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201703170327597_usertype.cs" />
-    <Compile Include="Migrations\201703170327597_usertype.Designer.cs">
-      <DependentUpon>201703170327597_usertype.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201703210227212_cl.cs" />
-    <Compile Include="Migrations\201703210227212_cl.Designer.cs">
-      <DependentUpon>201703210227212_cl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201703210319031_phonetype.cs" />
-    <Compile Include="Migrations\201703210319031_phonetype.Designer.cs">
-      <DependentUpon>201703210319031_phonetype.cs</DependentUpon>
+    <Compile Include="Migrations\201703220043514_init.cs" />
+    <Compile Include="Migrations\201703220043514_init.Designer.cs">
+      <DependentUpon>201703220043514_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -384,23 +364,8 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201703011424580_Init.resx">
-      <DependentUpon>201703011424580_Init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201703011519404_identity.resx">
-      <DependentUpon>201703011519404_identity.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201703150208183_dar.resx">
-      <DependentUpon>201703150208183_dar.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201703170327597_usertype.resx">
-      <DependentUpon>201703170327597_usertype.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201703210227212_cl.resx">
-      <DependentUpon>201703210227212_cl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201703210319031_phonetype.resx">
-      <DependentUpon>201703210319031_phonetype.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201703220043514_init.resx">
+      <DependentUpon>201703220043514_init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
