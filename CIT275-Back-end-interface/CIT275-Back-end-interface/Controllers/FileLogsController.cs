@@ -19,7 +19,8 @@ namespace CIT275_Back_end_interface.Controllers
         {
             public IEnumerable<FileLog> Filelogs { get; set; }
             public IEnumerable<Client> Clients { get; set; }
-            public IEnumerable<ClientAsset> Assets { get; set; }
+            public IEnumerable<Asset> Assets { get; set; }
+            public IEnumerable<ClientAsset> ClientAssests { get; set; }
         }
 
         // GET: FileLogs
@@ -28,7 +29,8 @@ namespace CIT275_Back_end_interface.Controllers
             var model = new ClientLogExRef();
             model.Filelogs = db.FileLogs.ToList();
             model.Clients = db.Clients.ToList();
-            //model.Assets = db.ClientAssets.ToList();
+            model.Assets = db.Assets.ToList();
+            model.ClientAssests = db.ClientAssets.ToList();
 
             return View(model);
         }
