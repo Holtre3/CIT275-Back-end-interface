@@ -60,6 +60,10 @@ table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSo
     background-color: #8dbdd8;
 }
 
+.table-responsive {
+    overflow-x: visible;
+}
+
 .logOption {
     color: #3c3c3c;
     background-color: transparent;
@@ -78,15 +82,30 @@ table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSo
 }
 
 .treeList li {
+    margin-bottom: 10px;
+}
+
+.treeList li a {
+    color: #2e2e2e;
+    font-weight: bold;
+}
+
+.treeListSub li a {
+    color: #3c3c3c;
 
 }
 
+.treeList li a, .treeListSub li a, .treeList .glyphicon {
+    cursor: pointer;
+}
+
 .treeListSub {
+    list-style-type: none;
     padding-left: 10px;
 }
 
 .treeListSub li {
-
+    
 }
 
 .treeOff {

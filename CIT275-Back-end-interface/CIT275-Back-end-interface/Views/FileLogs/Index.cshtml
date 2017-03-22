@@ -10,15 +10,15 @@
         <div class="col-sm-3 col-md-2 logSidebarLeft">
             <h2 class="sub-header">Clients</h2>
 
-            <ul class="treeList treeOff">
+            <ul class="treeList">
                 @foreach (var item in Model.Clients)
                 {
-                    <li>
-                        <a>@Html.DisplayFor(modelItem => item.CompanyName)</a>
-                        <ul class="treeListSub">
-                            @foreach (var item2 in Model.Assets)
+                    <li id="@item.ClientID">
+                        <span class="glyphicon glyphicon-menu-right" onclick="toggleTree(@item.ClientID)"></span> <a onclick="filterPerClient(@item.ClientID)">@Html.DisplayFor(modelItem => item.CompanyName)</a>
+                        <ul class="treeListSub treeOff">
+                            @foreach (var item2 in Model.ClientAssests)
                             {
-                                @*Return asset*@
+                                @getAssets(item.ClientID, item2, Model.Assets)
                             }
                         </ul>
                     </li>
@@ -30,7 +30,8 @@
         <div class="col-sm-6 col-sm-offset-3 col-md-8 col-md-offset-2 logMain">
             <h1 class="page-header">Log Files</h1>
 
-            <h2 class="sub-header">{ClientName}</h2>
+            <h2 class="sub-header" id="clientName">{ClientName}</h2>
+            <h3 class="sub-header" id="assetName">{AssetName}</h3>
 
             <p> @Html.ActionLink("Create New", "Create") </p>
             <div class="table-responsive">
@@ -114,7 +115,7 @@
                                         <a class="logOption dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <span class="glyphicon glyphicon-option-vertical"></span>
                                         </a>
-                                        <ul class="dropdownMenu">
+                                        <ul class="dropdown-menu dropdown-menu-right dropdownMenu">
                                             <li>@Html.ActionLink("Edit", "Edit", new { id = item.ID })</li>
                                             <li>@Html.ActionLink("Details", "Details", new { id = item.ID })</li>
                                             <li>@Html.ActionLink("Delete", "Delete", new { id = item.ID })</li>
@@ -170,6 +171,7 @@
 </div>
 
 <script type="text/javascript">
+    /* SORTING */
     $(document).ready(function () {
         $("#logTable").tablesorter({
             headers: {
@@ -188,6 +190,24 @@
             }
         });
     });
+
+    /* FILTER */
+    function filterPerClient(clientid)
+    {
+        
+    }
+
+    function filterPerAssets(assetid, clientid)
+    {
+
+    }
+
+    /* TREE MENU */
+    function toggleTree(clientid)
+    {
+        $('li#' + clientid + ' > span.glyphicon').toggleClass('glyphicon-menu-right glyphicon-menu-down');
+        $('li#' + clientid + ' > ul.treeListSub').toggleClass('treeOff treeOn');
+    }
 </script>
 
 @helper formatStatus(string s)
@@ -216,3 +236,25 @@
     <span class="label @labelFormat">@s</span>
 }
 
+@helper getAssets(int clientId, CIT275_Back_end_interface.Models.ClientAsset clientasset, IEnumerable<CIT275_Back_end_interface.Models.Asset> assets)
+{
+    List<CIT275_Back_end_interface.Models.Asset> fa = new List<CIT275_Back_end_interface.Models.Asset>();
+
+    if (clientId == clientasset.ClientID)
+    {
+        foreach (var item in assets)
+        {
+            if (item.AssetID == clientasset.AssetID)
+            {
+                fa.Add(item);
+            }
+        }
+    }
+
+    /* RETURN */
+    foreach (var item in fa)
+    {
+        <li><a onclick="filterPerAssets(@item.AssetID, @clientId)"><span class="glyphicon glyphicon-minus"></span> @item.Name</a></li>
+    }
+
+}
