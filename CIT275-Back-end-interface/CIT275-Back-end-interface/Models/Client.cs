@@ -17,13 +17,14 @@ namespace CIT275_Back_end_interface.Models
             Direct=2,
             Work=3,
             Home=4,
-            Fax=5,
-            Cell=6,
-            Video=7,
-            Msg=8,
-            Pager=9,
-            Text=10,
-            Other=11
+            Primary_Contact=5,
+            Fax=6,
+            Cell=7,
+            Video=8,
+            Msg=9,
+            Pager=10,
+            Text=11,
+            Other=12
         }
 
         [Key]

@@ -4,6 +4,37 @@
     ViewBag.Title = "Clients";
 }
 
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <br />
+    <table class="table col-sm-8 bgcolor-maroon">
+        <caption>Search by (starts with):</caption>
+        <tr>
+
+            <td>
+                <div>Company Name:</div><input id="company" name="company" type="text" />
+            </td>
+            <td>
+                <div>City:</div> <input id="city" name="city" type="text" />
+
+            </td>
+            <td>
+                <div>State (abbrev):</div> <input id="state" name="state" type="text" />
+
+            </td>
+            
+
+
+            <td>
+                <span class="glyphicon glyphicon-search"></span><input type="submit" value="Search" class="btn btn-primary" />
+            </td>
+        </tr>
+
+    </table>
+    <input type="reset" onclick="javascript: submit();" />
+} <!-- SEARCH FORM END -->
 <h2>Index</h2>
 
 <p>

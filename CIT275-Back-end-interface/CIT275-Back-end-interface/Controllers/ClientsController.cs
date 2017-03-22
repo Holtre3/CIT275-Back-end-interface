@@ -11,6 +11,7 @@ using DAL;
 
 namespace CIT275_Back_end_interface.Controllers
 {
+    [Authorize]
     public class ClientsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -18,6 +19,7 @@ namespace CIT275_Back_end_interface.Controllers
 
 
         // GET: Clients
+        [Authorize(Roles = "Admin, Staff")]
         public ActionResult Index()
         {
             var lst = _dc.GetClientList();
@@ -25,7 +27,34 @@ namespace CIT275_Back_end_interface.Controllers
             // return View(db.Clients.ToList());
         }
 
+        [Authorize(Roles = "Admin, Staff")]
+        [HttpPost]
+        public ActionResult Index(FormCollection fc)
+        {
+
+
+
+
+            string _company = "", _city = "", _state = "";
+
+
+            _company = fc["company"] != null ? fc["company"] : "";
+            _city = fc["city"] != null ? fc["city"] : "";
+            _state = fc["state"] != null ? fc["state"] : "";
+
+           
+
+
+            var lst = _dc.GetClientList(_company,_city,_state);
+
+            return View(lst);
+
+        }
+
+
+
         // GET: Clients/Details/5
+        [Authorize(Roles = "Admin, Staff")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -41,6 +70,7 @@ namespace CIT275_Back_end_interface.Controllers
         }
 
         // GET: Clients/Create
+        [Authorize(Roles = "Admin, Staff")]
         public ActionResult Create()
         {
            // @Html.DropDownListFor(m => m.ClientId, (IEnumerable<SelectListItem>)ViewBag.CustList, "--Select One--")
@@ -65,6 +95,7 @@ namespace CIT275_Back_end_interface.Controllers
         }
 
         // GET: Clients/Edit/5
+        [Authorize(Roles = "Admin, Staff")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -84,6 +115,7 @@ namespace CIT275_Back_end_interface.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, Staff")]
         public ActionResult Edit([Bind(Include = "ClientID,CompanyName,Address1,Address2,City,State,ZipCode,Phone1,Phone1Type,Phone2,Phone2Type,Email,EffDate,Active,DeleteInd")] Client client)
         {
             if (ModelState.IsValid)
@@ -96,6 +128,7 @@ namespace CIT275_Back_end_interface.Controllers
         }
 
         // GET: Clients/Delete/5
+        [Authorize(Roles = "Admin, Staff")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -112,6 +145,7 @@ namespace CIT275_Back_end_interface.Controllers
 
         // POST: Clients/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "Admin, Staff")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {

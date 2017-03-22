@@ -49,8 +49,8 @@ namespace CIT275_Back_end_interface.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Email")]
-        [EmailAddress]
+        [Display(Name = "Email or User Name")]
+
         public string Email { get; set; }
 
         [Required]

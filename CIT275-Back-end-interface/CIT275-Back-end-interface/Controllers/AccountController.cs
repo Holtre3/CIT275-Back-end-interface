@@ -75,10 +75,19 @@ namespace CIT275_Back_end_interface.Controllers
             {
                 return View(model);
             }
-
+            string uid = "";
+            if (model.Email.Contains("@"))
+            {
+                var user = UserManager.FindByEmail(model.Email);
+                if (user == null) { uid = model.Email; } else { uid = user.UserName; }
+                
+            }
+            else {
+                uid = model.Email;
+            }
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await SignInManager.PasswordSignInAsync(uid, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -436,7 +445,7 @@ namespace CIT275_Back_end_interface.Controllers
         }
         #region INDEX
 
-        // [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
 

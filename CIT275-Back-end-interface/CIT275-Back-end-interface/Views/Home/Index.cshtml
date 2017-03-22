@@ -17,6 +17,8 @@
 
     @if (User.Identity.IsAuthenticated)
     {
+        if (User.IsInRole("Admin") || User.IsInRole("Staff"))
+        {
     <div class="row">
         <div class="col-md-4 col-md-offset-2">
             <h2>Clients</h2>
@@ -34,6 +36,30 @@
             <p><a class="btn btn-default" href="~/FileLogs/Index">View Logs &raquo;</a></p>
         </div>
     </div>
+        }
+        else if (User.IsInRole("Client"))
+        {
+            <div class="row">
+                <div class="col-md-4 col-md-offset-2">
+                    <h2>Client Portal</h2>
+                   
+                    <p><a class="btn btn-default" href="~/Ftp/Index">Telemetry File Uploads &raquo;</a></p>
+                </div>
+                <div class="col-md-4">
+
+                    <p>
+                        For more information about what we do, please visit us at <a href="http://www.interactiveaerial.com/">Interactive Aerial Home Page</a>
+                    </p>
+                    <p>
+                        If you would like a customer service representative to call, please click the button:
+                    </p>
+                    <p><a class="btn btn-default" href="http://www.interactiveaerial.com/contact-us.html">Contact Us &raquo;</a></p>
+                </div>
+            </div>
+        }
+        else {
+
+        }
     }
     else
     {
