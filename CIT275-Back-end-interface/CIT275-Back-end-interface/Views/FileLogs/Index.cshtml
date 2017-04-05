@@ -14,7 +14,9 @@
                 @foreach (var item in Model.Clients)
                 {
                     <li id="@item.ClientID">
-                        <span class="glyphicon glyphicon-menu-right" onclick="toggleTree(@item.ClientID)"></span> <a onclick="filterPerClient(@item.ClientID)">@Html.DisplayFor(modelItem => item.CompanyName)</a>
+                        <span class="glyphicon glyphicon-menu-right" onclick="toggleTree(@item.ClientID)"></span>
+                        <a onclick="filterPerClient(@item.ClientID)">@Html.DisplayFor(modelItem => item.CompanyName)</a>
+
                         <ul class="treeListSub treeOff">
                             @foreach (var item2 in Model.ClientAssests)
                             {
@@ -43,87 +45,8 @@
             <p> @Html.ActionLink("Create New", "Create") </p>
             
             @* FILELOG TABLE *@
-            @Ajax.ActionLink(
-                 "Show",
-                 "Show",
-                 null,
-                 new AjaxOptions
-                 {
-                     HttpMethod = "GET",
-                     InsertionMode = InsertionMode.Replace,
-                     UpdateTargetId = "dialog_window_id",
-                     OnComplete = "your_js_function();"
-                 })
+            @Html.Partial("~/Views/FileLogs/FileLogsTable.cshtml", Model.Filelogs)
 
-            @*<div class="table-responsive">
-                <table id="logTable" class="table table-striped table-hover tablesorter">
-                    <thead>
-                        <tr>
-                            <th>FileName</th>
-                            <th>FilePath</th>
-                            <th>ClientID</th>
-                            <th>AssetID</th>
-                            <th>Status</th>
-                            <th>DeleteInd</th>
-                            <th>Archived</th>
-                            <th>BaseDate</th>
-                            <th>CreateDate</th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        @foreach (var item in Model.Filelogs)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.FileName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.FilePath)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.ClientID)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.AssetID)
-                                </td>
-                                <td>
-                                    @formatStatus(@Html.DisplayFor(modelItem => item.Status).ToString())
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.DeleteInd)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Archived)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.BaseDate)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.CreateDate)
-                                </td>
-                                <td>
-                                    <div class="btn-group">
-                                        <a class="logOption dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span class="glyphicon glyphicon-option-vertical"></span>
-                                        </a>
-                                        <ul class="dropdown-menu dropdown-menu-right dropdownMenu">
-                                            <li>@Html.ActionLink("Edit", "Edit", new { id = item.ID })</li>
-                                            <li>@Html.ActionLink("Details", "Details", new { id = item.ID })</li>
-                                            <li>@Html.ActionLink("Delete", "Delete", new { id = item.ID })</li>
-                                        </ul>
-                                    </div>
-                                </td>
-                                <td>
-                                    <a class="logOption"><span class="glyphicon glyphicon-download-alt"></span></a>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>*@
             <div class="col-sm-3 col-sm-offset-9 col-md-2 col-md-offset-10 logSidebarRight">
                 <div>
                     <h2 class="sub-header">Log Details</h2>
