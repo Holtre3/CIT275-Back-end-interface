@@ -130,11 +130,17 @@ namespace CIT275_Back_end_interface.Controllers
             return RedirectToAction("Index");
         }
 
-        /*public ActionResult ClientListView()
+        // POST: Partial FileLogsTable
+        [HttpPost]
+        public ActionResult LoadTable(string filter)
         {
-            
-            return View(db.Clients);
-        }*/
+            /*if (filter == null)
+            {
+
+            }*/
+
+            return PartialView("FileLogsTable", db.FileLogs.ToList());
+        }
 
         protected override void Dispose(bool disposing)
         {
