@@ -102,16 +102,11 @@
         $.ajax({
             type: 'POST',
             contentType: "application/json; charset=utf-8",
-            url: '@Url.Action("Index", "FileLogs")',
-            data: JSON.stringify(clientid),
-            async: false,
-            success: function (response) {
-                alert(response);
-                //append the data in between table tbody like,
-                //$('table tbody').html(response);
-                //No window.location.reload(); It will cause page reload initial data will appear in grid.
-            },
-            error: function () { alert("error"); }
+            url: '@Url.Action("LoadTable", "FileLogs")',
+            data: JSON.stringify(clientid)
+        })
+        .done(function (partialViewResult) {
+            $("#partial_table").html(partialViewResult);
         });
     }
 

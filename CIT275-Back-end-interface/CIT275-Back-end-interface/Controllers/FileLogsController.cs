@@ -132,14 +132,24 @@ namespace CIT275_Back_end_interface.Controllers
 
         // POST: Partial FileLogsTable
         [HttpPost]
-        public ActionResult LoadTable(string filter)
+        public ActionResult LoadTable(int? clientid)
         {
-            /*if (filter == null)
+            var model = new List<FileLog>();
+
+            if (clientid == null)
             {
+                model = (from r in db.FileLogs
+                         orderby r.CreateDate
+                        select r).Take(10).ToList();
+            }
+            else
+            {
+                model = (from r in db.FileLogs
+                         where r.ClientID == clientid
+                         select r).ToList();
+            }
 
-            }*/
-
-            return PartialView("FileLogsTable", db.FileLogs.ToList());
+            return PartialView("FileLogsTable", model);
         }
 
         protected override void Dispose(bool disposing)
