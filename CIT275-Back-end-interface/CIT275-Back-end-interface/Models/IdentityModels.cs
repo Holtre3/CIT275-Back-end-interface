@@ -63,7 +63,7 @@ namespace CIT275_Back_end_interface.Models
         [MaxLength(10)]
         public string Zip { get; set; }
 
-
+        //TODO: publish to azure
 
 
     }
