@@ -24,7 +24,7 @@ namespace CIT275_Back_end_interface.Controllers
         }
 
         // GET: FileLogs
-        public ActionResult Index()
+        public ActionResult Index(string filterString)
         {
             var model = new ClientLogExRef();
             model.Filelogs = db.FileLogs.ToList();

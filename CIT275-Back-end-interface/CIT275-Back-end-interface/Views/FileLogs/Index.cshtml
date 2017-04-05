@@ -31,10 +31,31 @@
             <h1 class="page-header">Log Files</h1>
 
             <h2 class="sub-header" id="clientName">{ClientName}</h2>
-            <h3 class="sub-header" id="assetName">{AssetName}</h3>
+            <h3 id="assetName">{AssetName}</h3>
+
+            @using (Html.BeginForm("Index", "FileLog", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+
+            }
 
             <p> @Html.ActionLink("Create New", "Create") </p>
-            <div class="table-responsive">
+            
+            @* FILELOG TABLE *@
+            @Ajax.ActionLink(
+                 "Show",
+                 "Show",
+                 null,
+                 new AjaxOptions
+                 {
+                     HttpMethod = "GET",
+                     InsertionMode = InsertionMode.Replace,
+                     UpdateTargetId = "dialog_window_id",
+                     OnComplete = "your_js_function();"
+                 })
+
+            @*<div class="table-responsive">
                 <table id="logTable" class="table table-striped table-hover tablesorter">
                     <thead>
                         <tr>
@@ -102,7 +123,7 @@
                         }
                     </tbody>
                 </table>
-            </div>
+            </div>*@
             <div class="col-sm-3 col-sm-offset-9 col-md-2 col-md-offset-10 logSidebarRight">
                 <div>
                     <h2 class="sub-header">Log Details</h2>
@@ -167,15 +188,20 @@
     /* FILTER */
     function filterPerClient(clientid)
     {
-        /*var $rows = $('.table tbody tr');
-        $('#search').keyup(function () {
-            var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
-
-            $rows.show().filter(function () {
-                var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
-                return !~text.indexOf(val);
-            }).hide();
-        });*/
+        $.ajax({
+            type: 'POST',
+            contentType: "application/json; charset=utf-8",
+            url: '@Url.Action("Index", "FileLogs")',
+            data: JSON.stringify(clientid),
+            async: false,
+            success: function (response) {
+                alert(response);
+                //append the data in between table tbody like,
+                //$('table tbody').html(response);
+                //No window.location.reload(); It will cause page reload initial data will appear in grid.
+            },
+            error: function () { alert("error"); }
+        });
     }
 
     function filterPerAssets(assetid, clientid)
@@ -191,31 +217,6 @@
     }
 </script>
 
-@helper formatStatus(string s)
-{
-    string labelFormat = "label-default";
-
-    switch (s)
-    {
-        case "OK":
-            labelFormat = "label-success";
-            break;
-
-        case "Processing":
-            labelFormat = "label-warning";
-            break;
-
-        case "Created":
-            labelFormat = "label-info";
-            break;
-
-        case "Error":
-            labelFormat = "label-danger";
-            break;
-    }
-
-    <span class="label @labelFormat">@s</span>
-}
 
 @helper getAssets(int clientId, CIT275_Back_end_interface.Models.ClientAsset clientasset, IEnumerable<CIT275_Back_end_interface.Models.Asset> assets)
 {
@@ -237,5 +238,4 @@
     {
         <li><a onclick="filterPerAssets(@item.AssetID, @clientId)"><span class="glyphicon glyphicon-minus"></span> @item.Name</a></li>
     }
-
 }
