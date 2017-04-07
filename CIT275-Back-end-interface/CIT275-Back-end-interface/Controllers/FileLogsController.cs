@@ -24,7 +24,7 @@ namespace CIT275_Back_end_interface.Controllers
         }
 
         // GET: FileLogs
-        public ActionResult Index()
+        public ActionResult Index(string filterString)
         {
             var model = new ClientLogExRef();
             model.Filelogs = db.FileLogs.ToList();
@@ -130,11 +130,33 @@ namespace CIT275_Back_end_interface.Controllers
             return RedirectToAction("Index");
         }
 
-        /*public ActionResult ClientListView()
+        // POST: Partial FileLogsTable
+        [HttpPost]
+        public ActionResult LoadTable(int? clientid, int? assetid)
         {
-            
-            return View(db.Clients);
-        }*/
+            var model = new List<FileLog>();
+
+            if (clientid == null && assetid == null)
+            {
+                model = (from r in db.FileLogs
+                         orderby r.CreateDate
+                        select r).Take(10).ToList();
+            }
+            else if (assetid == null)
+            {
+                model = (from r in db.FileLogs
+                         where r.ClientID == clientid
+                         select r).ToList();
+            }
+            else
+            {
+                model = (from r in db.FileLogs
+                         where r.ClientID == clientid && r.AssetID == assetid
+                         select r).ToList();
+            }
+
+            return PartialView("FileLogsTable", model);
+        }
 
         protected override void Dispose(bool disposing)
         {
