@@ -97,21 +97,30 @@
     });
 
     /* FILTER */
-    function filterPerClient(clientid)
+    function filterPerClient(clientid, assetid)
     {
         $.ajax({
             type: 'POST',
             contentType: "application/json; charset=utf-8",
             url: '@Url.Action("LoadTable", "FileLogs")',
-            data: JSON.stringify(clientid)
+            data: JSON.stringify(clientid, assetid)
         })
         .done(function (partialViewResult) {
             $("#partial_table").html(partialViewResult);
         });
     }
 
-    function filterPerAssets(assetid, clientid) {
-
+    function filterPerAssets(assetid, clientid)
+    {
+        $.ajax({
+            type: 'POST',
+            contentType: "application/json; charset=utf-8",
+            url: '@Url.Action("LoadTable", "FileLogs")',
+            data: JSON.stringify(clientid, assetid)
+        })
+        .done(function (partialViewResult) {
+            $("#partial_table").html(partialViewResult);
+        });
     }
 
     /* TREE MENU */
