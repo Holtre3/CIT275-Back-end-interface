@@ -47,7 +47,7 @@ namespace CIT275_Back_end_interface.Models
         public string City { get; set; }
 
         [Display(Name = "State")]
-        [StringLength(5)]
+        [StringLength(50)]
         public string State { get; set; }
 
         [Display(Name = "Zip Code")]
@@ -59,29 +59,37 @@ namespace CIT275_Back_end_interface.Models
         [Required(AllowEmptyStrings = false, ErrorMessage = "Phone Number is Required Field.")]
         public string Phone1 { get; set; }
 
+        [DefaultValue(0)]
         [Display(Name = "Phone Type")]
-        public IAPhoneType Phone1Type { get; set; }
+        public IAPhoneType? Phone1Type { get; set; }
+
 
         [Display(Name = "Phone")]
         [StringLength(50)]
         public string Phone2 { get; set; }
 
+        [DefaultValue(0)]
         [Display(Name = "Phone Type")]
-        public IAPhoneType Phone2Type { get; set; }
+        public IAPhoneType? Phone2Type { get; set; }
 
         //[RegularExpression("^([\\w\\.\\-]+)@([\\w\\-]+)((\\.(\\w){2,3})+)$", ErrorMessage = "Email Address is not Valid.")]
         [Display(Name = "Email")]
-        [Required]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
-        
 
+        [Display(Name = "Phone")]
+        [StringLength(50)]
+        public string Country { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayName("Eff. Date")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? EffDate { get; set; }
      
         [DefaultValue(0)]
-        public bool Active { get; set; }
+        public bool? Active { get; set; }
         [DefaultValue(0)]
-        public bool DeleteInd { get; set; }
+        public bool? DeleteInd { get; set; }
 
 
 

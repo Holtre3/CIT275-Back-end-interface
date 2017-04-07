@@ -1,40 +1,18 @@
-﻿@model IEnumerable<CIT275_Back_end_interface.Models.Client>
-
+﻿@model PagedList.IPagedList<CIT275_Back_end_interface.Models.Client>
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Clients";
 }
 
+<br />
+ @using (Html.BeginForm("Index", "Clients", FormMethod.Get))
+   {
+            <p>
+                Search: @Html.TextBox("searchString", ViewBag.CurrentFilter as string)
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    <br />
-    <table class="table col-sm-8 bgcolor-maroon">
-        <caption>Search by (starts with):</caption>
-        <tr>
-
-            <td>
-                <div>Company Name:</div><input id="company" name="company" type="text" />
-            </td>
-            <td>
-                <div>City:</div> <input id="city" name="city" type="text" />
-
-            </td>
-            <td>
-                <div>State (abbrev):</div> <input id="state" name="state" type="text" />
-
-            </td>
-            
-
-
-            <td>
-                <span class="glyphicon glyphicon-search"></span><input type="submit" value="Search" class="btn btn-primary" />
-            </td>
-        </tr>
-
-    </table>
-    <input type="reset" onclick="javascript: submit();" />
-} <!-- SEARCH FORM END -->
+                <input type="submit" value="Search" />
+            </p>
+ }<!-- SEARCH FORM END -->
 <h2>Index</h2>
 
 <p>
@@ -43,29 +21,30 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.CompanyName)
+            @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSortParm })
+            
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Address1)
+            Address1
         </th>
 
         <th>
-            @Html.DisplayNameFor(model => model.City)
+            @Html.ActionLink("City", "Index", new { sortOrder = ViewBag.CitySortParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.State)
+           State
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ZipCode)
+            @Html.ActionLink("Zip", "Index", new { sortOrder = ViewBag.ZipSortParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Phone1)
+            Phone
         </th>
         
        
         
         <th>
-            @Html.DisplayNameFor(model => model.Email)
+            Email
         </th>
         
         <th></th>
@@ -108,3 +87,8 @@
 }
 
 </table>
+<br />
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+        @Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))

@@ -71,9 +71,9 @@ namespace CIT275_Back_end_interface.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
-           // : base("DarLaptop", throwIfV1Schema: false)
-           // :  base("Azure_IA", throwIfV1Schema: false)
+           // : base("DefaultConnection", throwIfV1Schema: false)
+            : base("DEV", throwIfV1Schema: false)
+           // :  base("PROD", throwIfV1Schema: false)
          {
 
         }

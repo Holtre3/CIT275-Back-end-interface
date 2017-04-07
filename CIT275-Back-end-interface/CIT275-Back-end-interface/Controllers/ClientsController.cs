@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using CIT275_Back_end_interface.Models;
 using DAL;
+using PagedList;
 
 namespace CIT275_Back_end_interface.Controllers
 {
@@ -18,38 +19,100 @@ namespace CIT275_Back_end_interface.Controllers
         private DataRepository _dc = new DataRepository();
 
 
-        // GET: Clients
-        [Authorize(Roles = "Admin, Staff")]
-        public ActionResult Index()
+
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            var lst = _dc.GetClientList();
-            return View(lst);
-            // return View(db.Clients.ToList());
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = sortOrder == "Name" ? "name_desc" : "Name";
+            ViewBag.CitySortParm = sortOrder == "City" ? "city_desc" : "City";
+            ViewBag.ZipSortParm = sortOrder == "Zip" ? "zip_desc" : "Zip";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchString;
+
+
+            var clients = from s in db.Clients
+                           select s;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                clients = clients.Where(s => s.City.StartsWith(searchString)
+                                       || s.State.Equals(searchString)
+                                       || s.ZipCode.Equals(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "Name":
+                    clients = clients.OrderByDescending(s => s.CompanyName);
+                    break;
+                case "name_desc":
+                    clients = clients.OrderByDescending(s => s.CompanyName);
+                    break;
+                case "city":
+                    clients = clients.OrderByDescending(s => s.City);
+                    break;
+                case "city_desc":
+                    clients = clients.OrderByDescending(s => s.City);
+                    break;
+                case "Zip":
+                    clients = clients.OrderBy(s => s.ZipCode);
+                    break;
+                case "zip_desc":
+                    clients = clients.OrderByDescending(s => s.ZipCode);
+                    break;
+                default:  // Name ascending 
+                    clients = clients.OrderBy(s => s.CompanyName);
+                    break;
+            }
+
+            int pageSize = 15;
+            int pageNumber = (page ?? 1);
+            return View(clients.ToPagedList(pageNumber, pageSize));
         }
 
-        [Authorize(Roles = "Admin, Staff")]
-        [HttpPost]
-        public ActionResult Index(FormCollection fc)
-        {
+        // GET: Clients
+        //[Authorize(Roles = "Admin, Staff")]
+        //public ActionResult Index()
+        //{
+
+        //    var lst = _dc.GetClientList();
+        //    return View(lst);
+        //    // return View(db.Clients.ToList());
+        //}
 
 
 
 
-            string _company = "", _city = "", _state = "";
+        //[Authorize(Roles = "Admin, Staff")]
+        //[HttpPost]
+        //public ActionResult Index(FormCollection fc)
+        //{
 
 
-            _company = fc["company"] != null ? fc["company"] : "";
-            _city = fc["city"] != null ? fc["city"] : "";
-            _state = fc["state"] != null ? fc["state"] : "";
+
+
+        //    string _company = "", _city = "", _state = "";
+
+
+        //    _company = fc["company"] != null ? fc["company"] : "";
+        //    _city = fc["city"] != null ? fc["city"] : "";
+        //    _state = fc["state"] != null ? fc["state"] : "";
 
            
 
 
-            var lst = _dc.GetClientList(_company,_city,_state);
+        //    var lst = _dc.GetClientList(_company,_city,_state);
 
-            return View(lst);
+        //    return View(lst);
 
-        }
+        //}
 
 
 

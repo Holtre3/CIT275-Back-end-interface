@@ -82,6 +82,14 @@
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -211,6 +219,14 @@
     <Compile Include="Migrations\201703220043514_init.Designer.cs">
       <DependentUpon>201703220043514_init.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201704070343347_client.cs" />
+    <Compile Include="Migrations\201704070343347_client.Designer.cs">
+      <DependentUpon>201704070343347_client.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201704070345191_client2.cs" />
+    <Compile Include="Migrations\201704070345191_client2.Designer.cs">
+      <DependentUpon>201704070345191_client2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Asset.cs" />
@@ -234,6 +250,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\logFile.css" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="Documentation\db_Diagram.PNG" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -252,7 +269,8 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Documentation\Documentation.pdf" />
-    <None Include="Properties\PublishProfiles\InteractiveAerial - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\interactive-aerial-dev - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\interactive-aerial-dev - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -367,6 +385,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201703220043514_init.resx">
       <DependentUpon>201703220043514_init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704070343347_client.resx">
+      <DependentUpon>201704070343347_client.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704070345191_client2.resx">
+      <DependentUpon>201704070345191_client2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
