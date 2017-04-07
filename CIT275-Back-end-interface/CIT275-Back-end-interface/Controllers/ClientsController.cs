@@ -43,20 +43,21 @@ namespace CIT275_Back_end_interface.Controllers
                            select s;
             if (!String.IsNullOrEmpty(searchString))
             {
-                clients = clients.Where(s => s.City.StartsWith(searchString)
-                                       || s.State.Equals(searchString)
+                clients = clients.Where(s => s.CompanyName.StartsWith(searchString)
+                                        || s.City.StartsWith(searchString)
+                                       || s.State.StartsWith(searchString)
                                        || s.ZipCode.Equals(searchString));
             }
             switch (sortOrder)
             {
                 case "Name":
-                    clients = clients.OrderByDescending(s => s.CompanyName);
+                    clients = clients.OrderBy(s => s.CompanyName);
                     break;
                 case "name_desc":
                     clients = clients.OrderByDescending(s => s.CompanyName);
                     break;
-                case "city":
-                    clients = clients.OrderByDescending(s => s.City);
+                case "City":
+                    clients = clients.OrderBy(s => s.City);
                     break;
                 case "city_desc":
                     clients = clients.OrderByDescending(s => s.City);
