@@ -77,7 +77,7 @@ namespace CIT275_Back_end_interface.Models
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
-        [Display(Name = "Phone")]
+        [Display(Name = "Country")]
         [StringLength(50)]
         public string Country { get; set; }
 
