@@ -25,7 +25,8 @@ namespace CIT275_Back_end_interface.Controllers
         }
 
         // GET: FileLogs
-        public ActionResult Index(string filterString)
+        [Authorize(Roles = "Admin, Staff")]
+        public ActionResult Index()
         {
             var model = new ClientLogExRef();
             model.Filelogs = db.FileLogs.ToList();
@@ -34,6 +35,42 @@ namespace CIT275_Back_end_interface.Controllers
             model.ClientAssests = db.ClientAssets.ToList();
 
             return View(model);
+        }
+
+        // POST: Partial FileLogsTable
+        [HttpPost]
+        public ActionResult LoadTable(int? clientId, int? assetId, int? page)
+        {
+            var model = from s in db.FileLogs
+                        select s;
+
+            //Log Files Filters
+            if (clientId == null)
+            {
+                model = model.Take(30);
+                model = model.OrderBy(s => s.CreateDate);
+            }
+            else if (assetId == null)
+            {
+                model = model.Where(s => s.ClientID == clientId);
+                model = model.OrderBy(s => s.FileName);
+            }
+            else
+            {
+                model = model.Where(s => s.ClientID == clientId && s.AssetID == assetId);
+                model = model.OrderBy(s => s.FileName);
+            }
+
+            //Page Config
+            if (page == null)
+            {
+                page = 1;
+            }
+
+            int pageSize = 15;
+            int pageNumber = (page ?? 1);
+
+            return PartialView("FileLogsTable", model.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: FileLogs/Details/5
@@ -129,39 +166,6 @@ namespace CIT275_Back_end_interface.Controllers
             db.FileLogs.Remove(fileLog);
             db.SaveChanges();
             return RedirectToAction("Index");
-        }
-
-        // POST: Partial FileLogsTable
-        [HttpPost]
-        public ActionResult LoadTable(int? clientId, int? assetId, int? page)
-        {
-            var model = from s in db.FileLogs
-                          select s;
-
-            if (clientId == null)
-            {
-                model = model.Take(15);
-            }
-            else if (assetId == null)
-            {
-                model = model.Where(s => s.ClientID == clientId);
-            }
-            else
-            {
-                model = model.Where(s => s.ClientID == clientId && s.AssetID == assetId);
-            }
-
-            if (page == null)
-            {
-                page = 1;
-            }
-
-            model = model.OrderBy(s => s.FileName);
-
-            int pageSize = 15;
-            int pageNumber = (page ?? 1);
-
-            return PartialView("FileLogsTable", model.ToPagedList(pageNumber, pageSize));
         }
 
         protected override void Dispose(bool disposing)

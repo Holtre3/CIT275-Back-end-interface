@@ -83,13 +83,16 @@
 </div>
 
 <script type="text/javascript">
+    var gclientid = 1;
+    var gassetid = 1;
+
     $(document).ready(function () {
         //partial_table
         $.ajax({
             type: 'POST',
             url: '@Url.Action("LoadTable", "FileLogs")',
             async: false,
-            data: {  },
+            data: { },
             success: 
                 function(partialViewResult) {
                     $("#partial_table").html(partialViewResult);
