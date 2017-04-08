@@ -2,7 +2,7 @@
 
 .logSidebar {
     position: fixed;
-    top: 51px;
+    top: 68px;
     bottom: 0;
     left: 0;
     z-index: 1000;
@@ -16,7 +16,7 @@
 
 .logSidebarRight {
     position: fixed;
-    top: 51px;
+    top: 68px;
     bottom: 0;
     left: 0;
     z-index: 1000;
@@ -29,7 +29,7 @@
 }
 .logSidebarLeft {
     position: fixed;
-    top: 51px;
+    top: 68px;
     bottom: 0;
     left: 0;
     z-index: 1000;
@@ -79,6 +79,7 @@ table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSo
 
 .treeList {
     list-style-type: none;
+    padding-left: 10px;
 }
 
 .treeList li {
@@ -101,7 +102,7 @@ table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSo
 
 .treeListSub {
     list-style-type: none;
-    padding-left: 10px;
+    padding-left: 20px;
 }
 
 .treeListSub li {
