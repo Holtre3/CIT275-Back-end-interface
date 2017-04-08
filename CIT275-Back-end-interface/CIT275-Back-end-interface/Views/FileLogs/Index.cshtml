@@ -32,8 +32,8 @@
         <div class="col-sm-6 col-sm-offset-3 col-md-8 col-md-offset-2 logMain">
             <h1 class="page-header">Log Files</h1>
 
-            <h2 class="sub-header" id="clientName">{ClientName}</h2>
-            <h3 id="assetName">{AssetName}</h3>
+            <h2 class="sub-header" id="clientName">Client: </h2>
+            <!--<h3 id="assetName">{AssetName}</h3>-->
 
             <p> @Html.ActionLink("Create New", "Create") </p>
             
@@ -87,12 +87,14 @@
         //partial_table
         $.ajax({
             type: 'POST',
-            contentType: "application/json; charset=utf-8",
             url: '@Url.Action("LoadTable", "FileLogs")',
-            data: ""
-        })
-        .done(function (partialViewResult) {
-            $("#partial_table").html(partialViewResult);
+            async: false,
+            data: {  },
+            success: 
+                function(partialViewResult) {
+                    $("#partial_table").html(partialViewResult);
+                },
+            error: {}
         });
     });
 
@@ -101,12 +103,15 @@
     {
         $.ajax({
             type: 'POST',
-            contentType: "application/json; charset=utf-8",
             url: '@Url.Action("LoadTable", "FileLogs")',
-            data: JSON.stringify(clientid, assetid)
-        })
-        .done(function (partialViewResult) {
-            $("#partial_table").html(partialViewResult);
+            async: false,
+            data: { clientId: clientid },
+            success:
+                function(partialViewResult) {
+                    $("#clientName").text("Client: " + $("#" + clientid).text());
+                    $("#partial_table").html(partialViewResult);
+                },
+            error: {}
         });
     }
 
@@ -114,12 +119,15 @@
     {
         $.ajax({
             type: 'POST',
-            contentType: "application/json; charset=utf-8",
             url: '@Url.Action("LoadTable", "FileLogs")',
-            data: JSON.stringify(clientid, assetid)
-        })
-        .done(function (partialViewResult) {
-            $("#partial_table").html(partialViewResult);
+            async: false,
+            data: { clientId: clientid, assetId: assetid },
+            success:
+                function(partialViewResult) {
+                    $("#clientName").text("Client: " + $("#" + clientid).text());
+                    $("#partial_table").html(partialViewResult);
+                },
+            error: {}
         });
     }
 

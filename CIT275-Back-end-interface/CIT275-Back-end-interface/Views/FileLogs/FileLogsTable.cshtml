@@ -1,5 +1,5 @@
-﻿@model IEnumerable<CIT275_Back_end_interface.Models.FileLog>
-
+﻿@using PagedList.Mvc;
+@model PagedList.IPagedList<CIT275_Back_end_interface.Models.FileLog>
 
     <table id="logTable" class="table table-striped table-hover tablesorter">
         <thead>
@@ -68,6 +68,11 @@
             }
         </tbody>
     </table>
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("LoadTable",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
 
 <script type="text/javascript">
     /* SORTING */

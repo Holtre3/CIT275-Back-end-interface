@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using CIT275_Back_end_interface.Models;
+using PagedList;
 
 namespace CIT275_Back_end_interface.Controllers
 {
@@ -132,30 +133,35 @@ namespace CIT275_Back_end_interface.Controllers
 
         // POST: Partial FileLogsTable
         [HttpPost]
-        public ActionResult LoadTable(int? clientid, int? assetid)
+        public ActionResult LoadTable(int? clientId, int? assetId, int? page)
         {
-            var model = new List<FileLog>();
+            var model = from s in db.FileLogs
+                          select s;
 
-            if (clientid == null && assetid == null)
+            if (clientId == null)
             {
-                model = (from r in db.FileLogs
-                         orderby r.CreateDate
-                        select r).Take(10).ToList();
+                model = model.Take(15);
             }
-            else if (assetid == null)
+            else if (assetId == null)
             {
-                model = (from r in db.FileLogs
-                         where r.ClientID == clientid
-                         select r).ToList();
+                model = model.Where(s => s.ClientID == clientId);
             }
             else
             {
-                model = (from r in db.FileLogs
-                         where r.ClientID == clientid && r.AssetID == assetid
-                         select r).ToList();
+                model = model.Where(s => s.ClientID == clientId && s.AssetID == assetId);
             }
 
-            return PartialView("FileLogsTable", model);
+            if (page == null)
+            {
+                page = 1;
+            }
+
+            model = model.OrderBy(s => s.FileName);
+
+            int pageSize = 15;
+            int pageNumber = (page ?? 1);
+
+            return PartialView("FileLogsTable", model.ToPagedList(pageNumber, pageSize));
         }
 
         protected override void Dispose(bool disposing)
