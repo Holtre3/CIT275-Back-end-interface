@@ -59,14 +59,11 @@ namespace CIT275_Back_end_interface.Controllers
                 model = model.OrderBy(s => s.FileName);
             }
 
-            //Page Config
-            if (page == null)
-            {
-                page = 1;
-            }
-
             int pageSize = 15;
             int pageNumber = (page ?? 1);
+
+            ViewBag.GClientId = clientId;
+            ViewBag.GAssetId = assetId;
 
             return PartialView("FileLogsTable", model.ToPagedList(pageNumber, pageSize));
         }

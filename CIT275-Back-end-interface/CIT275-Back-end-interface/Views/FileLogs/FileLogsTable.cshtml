@@ -70,7 +70,8 @@
 </table>
 
 Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-@Html.PagedListPager(Model, page => Url.Action("LoadTable", new { page = page }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "POST", UpdateTargetId = "partial_table" }))
+@Html.PagedListPager(Model, page => Url.Action("LoadTable", new { clientId = ViewBag.GClientId, assetId = ViewBag.GAssetId, page = page }),
+    PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "POST", UpdateTargetId = "partial_table" }))
 
 
 <script type="text/javascript">
