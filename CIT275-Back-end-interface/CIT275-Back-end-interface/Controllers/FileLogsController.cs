@@ -42,10 +42,13 @@ namespace CIT275_Back_end_interface.Controllers
             var model = from s in db.FileLogs
                         select s;
 
+            int pageSize = 15;
+            int pageNumber = (page ?? 1);
+
             //Log Files Filters
             if (clientId == null)
             {
-                model = model.Take(30);
+                model = model.Take(pageSize * 2);
                 model = model.OrderBy(s => s.CreateDate);
             }
             else if (assetId == null)
@@ -59,9 +62,7 @@ namespace CIT275_Back_end_interface.Controllers
                 model = model.OrderBy(s => s.FileName);
             }
 
-            int pageSize = 15;
-            int pageNumber = (page ?? 1);
-
+            //Passing Information
             ViewBag.GClientId = clientId;
             ViewBag.GAssetId = assetId;
 
