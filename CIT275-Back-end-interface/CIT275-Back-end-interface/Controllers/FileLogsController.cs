@@ -18,7 +18,6 @@ namespace CIT275_Back_end_interface.Controllers
         //Partial class for filelogs, clients, and assests
         public class ClientLogExRef
         {
-            public IEnumerable<FileLog> Filelogs { get; set; }
             public IEnumerable<Client> Clients { get; set; }
             public IEnumerable<Asset> Assets { get; set; }
             public IEnumerable<ClientAsset> ClientAssests { get; set; }
@@ -29,7 +28,6 @@ namespace CIT275_Back_end_interface.Controllers
         public ActionResult Index()
         {
             var model = new ClientLogExRef();
-            model.Filelogs = db.FileLogs.ToList();
             model.Clients = db.Clients.ToList();
             model.Assets = db.Assets.ToList();
             model.ClientAssests = db.ClientAssets.ToList();
