@@ -72,8 +72,8 @@ namespace CIT275_Back_end_interface.Models
     {
         public ApplicationDbContext()
            // : base("DefaultConnection", throwIfV1Schema: false)
-            : base("DEV", throwIfV1Schema: false)
-           // :  base("PROD", throwIfV1Schema: false)
+           // : base("DEV", throwIfV1Schema: false)
+            :  base("PROD", throwIfV1Schema: false)
          {
 
         }
