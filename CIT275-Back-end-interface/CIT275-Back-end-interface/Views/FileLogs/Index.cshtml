@@ -15,7 +15,7 @@
                 {
                     <li id="@item.ClientID">
                         <span class="glyphicon glyphicon-menu-right" onclick="toggleTree(@item.ClientID)"></span>
-                        <a onclick="filterPerClient(@item.ClientID)">@Html.DisplayFor(modelItem => item.CompanyName)</a>
+                        <a onclick="ajaxTemp(@item.ClientID)">@Html.DisplayFor(modelItem => item.CompanyName)</a>
 
                         <ul class="treeListSub treeOff">
                             @foreach (var item2 in Model.ClientAssests)
@@ -32,94 +32,76 @@
         <div class="col-sm-6 col-sm-offset-3 col-md-8 col-md-offset-2 logMain">
             <h1 class="page-header">Log Files</h1>
 
-            <h2 class="sub-header" id="clientName">{ClientName}</h2>
-            <h3 id="assetName">{AssetName}</h3>
+            <h2 class="sub-header" id="clientName">Client: </h2>
+            <button class="btn btn-danger" onclick="ajaxTemp()">Clear Filter</button>
+            <!--<h3 id="assetName">{AssetName}</h3>-->
 
             <p> @Html.ActionLink("Create New", "Create") </p>
             
-            @* FILELOG TABLE *@
             <div class="table-responsive" id="partial_table">
-                @*@Html.Partial("~/Views/FileLogs/FileLogsTable.cshtml", Model.Filelogs)*@
+                @* FILELOG TABLE *@
             </div>
 
-                <div class="col-sm-3 col-sm-offset-9 col-md-2 col-md-offset-10 logSidebarRight">
-                    <div>
-                        <h2 class="sub-header">Log Details</h2>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <tbody>
-                                <tr>
-                                    <th>LogFileId</th>
-                                    <td>1</td>
-
-                                </tr>
-                                <tr>
-                                    <th>LogFileName</th>
-                                    <td>log1</td>
-                                </tr>
-                                <tr>
-                                    <th>LogFileDate</th>
-                                    <td>1/1/2017</td>
-
-                                </tr>
-                                <tr>
-                                    <th>LogFileSize</th>
-                                    <td>1kb</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <p><a class="btn btn-success" href="~/FileLogs/Index">Download Log <span class="glyphicon glyphicon-download-alt"></span></a></p>
-                    <p><a class="btn btn-warning" href="~/FileLogs/Index">Archive Log</a></p>
+            <div class="col-sm-3 col-sm-offset-9 col-md-2 col-md-offset-10 logSidebarRight">
+                <div>
+                    <h2 class="sub-header">Log Details</h2>
                 </div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <tbody>
+                            <tr>
+                                <th>LogFileId</th>
+                                <td>1</td>
 
-                <hr />
-                <footer>
-                    <p>&copy; @DateTime.Now.Year - Interactive Aerial</p>
-                </footer>
+                            </tr>
+                            <tr>
+                                <th>LogFileName</th>
+                                <td>log1</td>
+                            </tr>
+                            <tr>
+                                <th>LogFileDate</th>
+                                <td>1/1/2017</td>
+
+                            </tr>
+                            <tr>
+                                <th>LogFileSize</th>
+                                <td>1kb</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p><a class="btn btn-success" href="~/FileLogs/Index">Download Log <span class="glyphicon glyphicon-download-alt"></span></a></p>
+                <p><a class="btn btn-warning" href="~/FileLogs/Index">Archive Log</a></p>
             </div>
+
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - Interactive Aerial</p>
+            </footer>
+        </div>
     </div>
 </div>
 
 <script type="text/javascript">
     $(document).ready(function () {
         //partial_table
-        $.ajax({
-            type: 'POST',
-            contentType: "application/json; charset=utf-8",
-            url: '@Url.Action("LoadTable", "FileLogs")',
-            data: ""
-        })
-        .done(function (partialViewResult) {
-            $("#partial_table").html(partialViewResult);
-        });
+        ajaxTemp();
     });
 
-    /* FILTER */
-    function filterPerClient(clientid, assetid)
+    //Ajax Template
+    function ajaxTemp(clientid, assetid)
     {
         $.ajax({
             type: 'POST',
-            contentType: "application/json; charset=utf-8",
             url: '@Url.Action("LoadTable", "FileLogs")',
-            data: JSON.stringify(clientid, assetid)
-        })
-        .done(function (partialViewResult) {
-            $("#partial_table").html(partialViewResult);
-        });
-    }
-
-    function filterPerAssets(assetid, clientid)
-    {
-        $.ajax({
-            type: 'POST',
-            contentType: "application/json; charset=utf-8",
-            url: '@Url.Action("LoadTable", "FileLogs")',
-            data: JSON.stringify(clientid, assetid)
-        })
-        .done(function (partialViewResult) {
-            $("#partial_table").html(partialViewResult);
+            async: false,
+            data: { clientId: clientid, assetId: assetid },
+            success:
+                function(partialViewResult) {
+                    $("#clientName").text("Client: " + $("#" + clientid).text());
+                    $("#partial_table").html(partialViewResult);
+                },
+            error: {}
         });
     }
 
@@ -149,6 +131,6 @@
     /* RETURN */
     foreach (var item in fa)
     {
-        <li><a onclick="filterPerAssets(@item.AssetID, @clientId)"><span class="glyphicon glyphicon-minus"></span> @item.Name</a></li>
+        <li><a onclick="ajaxTemp(@clientId, @item.AssetID)"><span class="glyphicon glyphicon-minus"></span> @item.Name</a></li>
     }
 }

@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using CIT275_Back_end_interface.Models;
+using PagedList;
 
 namespace CIT275_Back_end_interface.Controllers
 {
@@ -17,22 +18,55 @@ namespace CIT275_Back_end_interface.Controllers
         //Partial class for filelogs, clients, and assests
         public class ClientLogExRef
         {
-            public IEnumerable<FileLog> Filelogs { get; set; }
             public IEnumerable<Client> Clients { get; set; }
             public IEnumerable<Asset> Assets { get; set; }
             public IEnumerable<ClientAsset> ClientAssests { get; set; }
         }
 
         // GET: FileLogs
-        public ActionResult Index(string filterString)
+        [Authorize(Roles = "Admin, Staff")]
+        public ActionResult Index()
         {
             var model = new ClientLogExRef();
-            model.Filelogs = db.FileLogs.ToList();
             model.Clients = db.Clients.ToList();
             model.Assets = db.Assets.ToList();
             model.ClientAssests = db.ClientAssets.ToList();
 
             return View(model);
+        }
+
+        // POST: Partial FileLogsTable
+        [HttpPost]
+        public ActionResult LoadTable(int? clientId, int? assetId, int? page)
+        {
+            var model = from s in db.FileLogs
+                        select s;
+
+            int pageSize = 15;
+            int pageNumber = (page ?? 1);
+
+            //Log Files Filters
+            if (clientId == null)
+            {
+                model = model.Take(pageSize * 2);
+                model = model.OrderBy(s => s.CreateDate);
+            }
+            else if (assetId == null)
+            {
+                model = model.Where(s => s.ClientID == clientId);
+                model = model.OrderBy(s => s.FileName);
+            }
+            else
+            {
+                model = model.Where(s => s.ClientID == clientId && s.AssetID == assetId);
+                model = model.OrderBy(s => s.FileName);
+            }
+
+            //Passing Information
+            ViewBag.GClientId = clientId;
+            ViewBag.GAssetId = assetId;
+
+            return PartialView("FileLogsTable", model.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: FileLogs/Details/5
@@ -128,34 +162,6 @@ namespace CIT275_Back_end_interface.Controllers
             db.FileLogs.Remove(fileLog);
             db.SaveChanges();
             return RedirectToAction("Index");
-        }
-
-        // POST: Partial FileLogsTable
-        [HttpPost]
-        public ActionResult LoadTable(int? clientid, int? assetid)
-        {
-            var model = new List<FileLog>();
-
-            if (clientid == null && assetid == null)
-            {
-                model = (from r in db.FileLogs
-                         orderby r.CreateDate
-                        select r).Take(10).ToList();
-            }
-            else if (assetid == null)
-            {
-                model = (from r in db.FileLogs
-                         where r.ClientID == clientid
-                         select r).ToList();
-            }
-            else
-            {
-                model = (from r in db.FileLogs
-                         where r.ClientID == clientid && r.AssetID == assetid
-                         select r).ToList();
-            }
-
-            return PartialView("FileLogsTable", model);
         }
 
         protected override void Dispose(bool disposing)
