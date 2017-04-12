@@ -84,7 +84,7 @@ namespace CIT275_Back_end_interface.Controllers
         [NonAction]
         static void DownloadFile(string ftpAddress, NetworkCredential credential, string fileName)
         {
-            var request = (FtpWebRequest)WebRequest.Create($"ftp://{ftpAddress}/{fileName}");
+            var request = (FtpWebRequest)WebRequest.Create($"ftp://{ftpAddress}/Logs/{fileName}");
             request.Credentials = credential;
             request.Method = WebRequestMethods.Ftp.DownloadFile;
 
@@ -110,10 +110,10 @@ namespace CIT275_Back_end_interface.Controllers
         [NonAction]
         static void MoveFile(string ftpAddress, NetworkCredential credential, string fileName)
         {
-            var request = (FtpWebRequest)WebRequest.Create($"ftp://{ftpAddress}/{fileName}");
+            var request = (FtpWebRequest)WebRequest.Create($"ftp://{ftpAddress}/Logs/{fileName}");
             request.Credentials = credential;
             request.Method = WebRequestMethods.Ftp.Rename;
-            request.RenameTo = $"../Logs/{fileName}";
+            request.RenameTo = $"../Logs-Archive/{fileName}";
             FtpWebResponse response = (FtpWebResponse)request.GetResponse();
         }
 
@@ -122,7 +122,7 @@ namespace CIT275_Back_end_interface.Controllers
         {
             var files = new List<string>();
 
-            var request = (FtpWebRequest)WebRequest.Create($"ftp://{ftpAddress}/");
+            var request = (FtpWebRequest)WebRequest.Create($"ftp://{ftpAddress}/Logs/");
             request.Credentials = credential;
             request.Method = WebRequestMethods.Ftp.ListDirectory;
 
@@ -156,7 +156,7 @@ namespace CIT275_Back_end_interface.Controllers
 
             try
             {
-                using (StreamReader sr = new StreamReader(Server.MapPath(@"~\FtpConfig.Temp"))){
+                using (StreamReader sr = new StreamReader(Server.MapPath(@"~\FtpConfig.config"))){
                     ftpInformation = sr.ReadToEnd();                    
                 }
 
@@ -188,7 +188,7 @@ namespace CIT275_Back_end_interface.Controllers
 
             try
             {
-                using (StreamWriter sw = new StreamWriter(Server.MapPath(@"~\FtpConfig.Temp")))
+                using (StreamWriter sw = new StreamWriter(Server.MapPath(@"~\FtpConfig.config")))
                 {
                     sw.WriteLine(ftpInfo);
                 }
