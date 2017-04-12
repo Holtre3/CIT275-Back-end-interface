@@ -54,7 +54,7 @@
 </div>
 }
 
-<!--  Must be in role staff,admin or client. -->
+<!--  Must be in role staff, admin or client. -->
 @if (User.IsInRole("Staff") || User.IsInRole("Admin") || User.IsInRole("Client"))
 {
 <div class="col-md-6">
@@ -108,14 +108,16 @@
                     fileName: fileName
                 }, success: function (data) {
                     //change image to checkmark
-                    $(this).children('span').removeClass('glyphicon-transfer').addClass('glyphicon-saved');
+                    $('span.glyphicon-transfer').removeClass('glyphicon-transfer').addClass('glyphicon-saved');
                 }, error: function (event, jqXHR, ajaxSettings, thrownError) {
-                    alert("There was an error processing " + fileName);
+                    alert("There was an error processing " + fileName + ".");
                     //change image to error icon
-                    $(this).children('span').removeClass().addClass('glyphicon glyphicon-warning-sign');
+                    $('span.glyphicon-transfer').removeClass('glyphicon-transfer').addClass('glyphicon-warning-sign');
                 }
-            });            
+            });
         });
+
+        alert("Processing complete.");
     });
 
 
