@@ -14,32 +14,25 @@ namespace CIT275_Back_end_interface.Controllers
 {
     public class FtpController : Controller
     {
-        const int HASH_SIZE = 32;
-        static string _Pwd = "NMCdr0neIA";
-        static byte[] _Salt = new byte[] { 0x45, 0xF1, 0x61, 0x6e, 0x20, 0x00, 0x65, 0x64, 0x76, 0x65, 0x64, 0x03, 0x76 };
+        static string _Pwd = "NMCdr0neIA67V@!";
+        static string _IV = "nMcdr0n3157!!34V";
 
         [HttpGet]
         public ActionResult Index()
         {
-            // REMOVE AT LATER TIME
-            // REMOVE AT LATER TIME
             string[] ftpInfo = GetCredentials().Split('|');
 
             string ftpAddress = ftpInfo[0];
             string user = ftpInfo[1];
             string password = ftpInfo[2];
 
-            /*string ftpAddress = "home200935066.1and1-data.host";
-            string user = "u44756264-NMC";
-            string password = "NMCdr0ne";*/
-            // REMOVE AT LATER TIME
-            // REMOVE AT LATER TIME
+            this.Session["FTPServerAddress"] = ftpAddress;
+            this.Session["FTPUserName"] = user;
+            this.Session["FTPPassword"] = password;
 
             NetworkCredential credential = new NetworkCredential(user, password);
 
             ViewBag.FileList = ListDirectory(ftpAddress, credential);
-
-            //CREATE SESSION VARIABLES
 
             return View();
         }
@@ -65,13 +58,11 @@ namespace CIT275_Back_end_interface.Controllers
         [HttpPost]
         public async Task<JsonResult> ProcessFile(string fileName)
         {
-            // REMOVE AT LATER TIME
-            // REMOVE AT LATER TIME
-            string ftpAddress = "home200935066.1and1-data.host";
-            string user = "u44756264-NMC";
-            string password = "NMCdr0ne";
-            // REMOVE AT LATER TIME
-            // REMOVE AT LATER TIME
+            string[] ftpInfo = GetCredentials().Split('|');
+
+            string ftpAddress = ftpInfo[0];
+            string user = ftpInfo[1];
+            string password = ftpInfo[2];
 
             var request = (FtpWebRequest)WebRequest.Create($"ftp://{ftpAddress}/");
             NetworkCredential credential = new NetworkCredential(user, password);
@@ -93,7 +84,7 @@ namespace CIT275_Back_end_interface.Controllers
         [NonAction]
         static void DownloadFile(string ftpAddress, NetworkCredential credential, string fileName)
         {
-            var request = (FtpWebRequest)WebRequest.Create($"ftp://{ftpAddress}/{fileName}");
+            var request = (FtpWebRequest)WebRequest.Create($"ftp://{ftpAddress}/Logs/{fileName}");
             request.Credentials = credential;
             request.Method = WebRequestMethods.Ftp.DownloadFile;
 
@@ -119,10 +110,10 @@ namespace CIT275_Back_end_interface.Controllers
         [NonAction]
         static void MoveFile(string ftpAddress, NetworkCredential credential, string fileName)
         {
-            var request = (FtpWebRequest)WebRequest.Create($"ftp://{ftpAddress}/{fileName}");
+            var request = (FtpWebRequest)WebRequest.Create($"ftp://{ftpAddress}/Logs/{fileName}");
             request.Credentials = credential;
             request.Method = WebRequestMethods.Ftp.Rename;
-            request.RenameTo = $"../Logs/{fileName}";
+            request.RenameTo = $"../Logs-Archive/{fileName}";
             FtpWebResponse response = (FtpWebResponse)request.GetResponse();
         }
 
@@ -131,7 +122,7 @@ namespace CIT275_Back_end_interface.Controllers
         {
             var files = new List<string>();
 
-            var request = (FtpWebRequest)WebRequest.Create($"ftp://{ftpAddress}/");
+            var request = (FtpWebRequest)WebRequest.Create($"ftp://{ftpAddress}/Logs/");
             request.Credentials = credential;
             request.Method = WebRequestMethods.Ftp.ListDirectory;
 
@@ -166,13 +157,9 @@ namespace CIT275_Back_end_interface.Controllers
             try
             {
                 using (StreamReader sr = new StreamReader(Server.MapPath(@"~\FtpConfig.config"))){
-                    ftpInformation = sr.ReadToEnd();
+                    ftpInformation = sr.ReadToEnd();                    
                 }
 
-                byte[] cipherText = Encoding.ASCII.GetBytes(ftpInformation);
-                //byte[] decryptedInfo = Decrypt(_Pwd, _Salt, cipherText);
-
-                //ftpInfoArray = Encoding.ASCII.GetString(decryptedInfo).Split('|');
                 ftpInfoArray = ftpInformation.Split('|');
 
             }
@@ -198,16 +185,11 @@ namespace CIT275_Back_end_interface.Controllers
             string password = Convert.ToString(collection["password"]);
             string ftpInfo = hostname + "|" + username + "|" + password;
             string result = "";
-            /*
-            byte[] saveString = Encoding.ASCII.GetBytes(hostname + "|" + username + "|" + password);
-            byte[] ftpInformation = Encrypt(_Pwd, _Salt, saveString);
-            */
-            //save encrypted ftp information
+
             try
             {
                 using (StreamWriter sw = new StreamWriter(Server.MapPath(@"~\FtpConfig.config")))
                 {
-                    //sw.Write(Encoding.ASCII.GetString(ftpInformation));
                     sw.WriteLine(ftpInfo);
                 }
 
@@ -224,17 +206,15 @@ namespace CIT275_Back_end_interface.Controllers
 
             return RedirectToAction("Configuration", "Ftp", new { message = result });
         }
-
-
-
+        
         [NonAction]
         public string GetCredentials()
         {
-            string ftpInfo;
+            string ftpInfo = "";
 
             try
             {
-                using (StreamReader sr = new StreamReader(Server.MapPath(@"~\FtpConfig.Config")))
+                using (StreamReader sr = new StreamReader(Server.MapPath(@"~\FtpConfig.config")))
                 {
                     ftpInfo = sr.ReadLine();
                 }
@@ -246,100 +226,6 @@ namespace CIT275_Back_end_interface.Controllers
 
             return ftpInfo;            
         }
-
-        [NonAction]
-        public static byte[] Encrypt(string password, byte[] passwordSalt, byte[] plainText)
-        {
-            // Construct message with hash
-            var msg = new byte[HASH_SIZE + plainText.Length];
-            var hash = ComputeHash(plainText, 0, plainText.Length);
-            Buffer.BlockCopy(hash, 0, msg, 0, HASH_SIZE);
-            Buffer.BlockCopy(plainText, 0, msg, HASH_SIZE, plainText.Length);
-
-            // Encrypt
-            using (var aes = CreateAes(password, passwordSalt))
-            {
-                aes.GenerateIV();
-                using (var enc = aes.CreateEncryptor())
-                {
-
-                    var encBytes = enc.TransformFinalBlock(msg, 0, msg.Length);
-                    // Prepend IV to result
-                    var res = new byte[aes.IV.Length + encBytes.Length];
-                    Buffer.BlockCopy(aes.IV, 0, res, 0, aes.IV.Length);
-                    Buffer.BlockCopy(encBytes, 0, res, aes.IV.Length, encBytes.Length);
-                    return res;
-                }
-            }
-        }
-        [NonAction]
-        public static byte[] Decrypt(string password, byte[] passwordSalt, byte[] cipherText)
-        {
-            using (var aes = CreateAes(password, passwordSalt))
-            {
-                var iv = new byte[aes.IV.Length];
-                Buffer.BlockCopy(cipherText, 0, iv, 0, iv.Length);
-                aes.IV = iv; // Probably could copy right to the byte array, but that's not guaranteed
-
-                using (var dec = aes.CreateDecryptor())
-                {
-                    var decBytes = dec.TransformFinalBlock(cipherText, iv.Length, cipherText.Length - iv.Length);
-
-                    // Verify hash
-                    var hash = ComputeHash(decBytes, HASH_SIZE, decBytes.Length - HASH_SIZE);
-                    var existingHash = new byte[HASH_SIZE];
-                    Buffer.BlockCopy(decBytes, 0, existingHash, 0, HASH_SIZE);
-                    if (!CompareBytes(existingHash, hash))
-                    {
-                        throw new CryptographicException("Message hash incorrect.");
-                    }
-
-                    // Hash is valid, we're done
-                    var res = new byte[decBytes.Length - HASH_SIZE];
-                    Buffer.BlockCopy(decBytes, HASH_SIZE, res, 0, res.Length);
-                    return res;
-                }
-            }
-        }
-        [NonAction]
-        static bool CompareBytes(byte[] a1, byte[] a2)
-        {
-            if (a1.Length != a2.Length) return false;
-            for (int i = 0; i < a1.Length; i++)
-            {
-                if (a1[i] != a2[i]) return false;
-            }
-            return true;
-        }
-        [NonAction]
-        static Aes CreateAes(string password, byte[] salt)
-        {
-            // Salt may not be needed if password is safe
-            if (password.Length < 8) throw new ArgumentException("Password must be at least 8 characters.", "password");
-            if (salt.Length < 8) throw new ArgumentException("Salt must be at least 8 bytes.", "salt");
-            var pdb = new PasswordDeriveBytes(password, salt, "SHA512", 129);
-            var key = pdb.GetBytes(16);
-
-            var aes = Aes.Create();
-            aes.Mode = CipherMode.CBC;
-            aes.Key = pdb.GetBytes(aes.KeySize / 8);
-            return aes;
-        }
-        [NonAction]
-        static byte[] ComputeHash(byte[] data, int offset, int count)
-        {
-            using (var sha = SHA256.Create())
-            {
-                return sha.ComputeHash(data, offset, count);
-            }
-        }
-
-
-
-
-
-
-
 
         //TODO: Create a file log record
     }

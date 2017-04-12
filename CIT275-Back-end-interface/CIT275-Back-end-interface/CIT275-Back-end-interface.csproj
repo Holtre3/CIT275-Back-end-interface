@@ -254,6 +254,7 @@
     <Content Include="Documentation\db_Diagram.PNG" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="FtpConfig.config" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Assets\IA_Logo.png" />

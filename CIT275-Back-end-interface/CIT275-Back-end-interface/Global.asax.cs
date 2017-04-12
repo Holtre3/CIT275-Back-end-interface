@@ -17,5 +17,13 @@ namespace CIT275_Back_end_interface
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
+
+        protected void Session_Start(Object sender, EventArgs e)
+        {
+            //session variables for ftp
+            HttpContext.Current.Session.Add("FTPServerName", "");
+            HttpContext.Current.Session.Add("FTPUserName", "");
+            HttpContext.Current.Session.Add("FTPPassword", "");
+        }
     }
 }
