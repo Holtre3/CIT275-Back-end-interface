@@ -45,10 +45,17 @@ namespace CIT275_Back_end_interface.Controllers
                 (Path.GetExtension(uploadedFile.FileName) == ".log" || Path.GetExtension(uploadedFile.FileName) == ".txt"))
             {
                 string fileName = Path.GetFileName(uploadedFile.FileName);
-                //string path = Path.Combine(Server.MapPath("~/App_Data/Uploads"), fileName);
-                string path = Path.Combine(@"C:\TempData\", fileName);
-                uploadedFile.SaveAs(path);
-            }
+                string path = Path.Combine(Server.MapPath("~/Uploads/"), fileName);
+                //string path = Path.Combine(@"C:\TempData\", fileName);
+                try
+                {
+                    uploadedFile.SaveAs(path);
+                }
+                catch (Exception ex)
+                {
+                    
+                }
+            } 
 
             //TODO: Give feedback to page
 
@@ -72,10 +79,10 @@ namespace CIT275_Back_end_interface.Controllers
                 DownloadFile(ftpAddress, credential, fileName);
                 MoveFile(ftpAddress, credential, fileName);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return Json("Upload failed");
+                return Json("Upload failed. " + ex.Message);
             }
 
             return Json("File uploaded successfully");
@@ -95,13 +102,14 @@ namespace CIT275_Back_end_interface.Controllers
 
             try
             {
-                FileStream file = new FileStream(@"~\App_Data\LogFiles\" + fileName, FileMode.Create);
+                FileStream file = new FileStream(AppDomain.CurrentDomain.BaseDirectory + "Uploads\\LogFiles\\" + fileName, FileMode.Create);
+                //FileStream file = new FileStream("C:\\Users\\jacobs33\\Source\\Repos\\CIT275-Back-end-interface\\CIT275-Back-end-interface\\CIT275-Back-end-interface\\Uploads\\LogFiles\\" + fileName, FileMode.Create);
                 responseStream.CopyTo(file);
             }
             catch (DirectoryNotFoundException de)
             {
-                Directory.CreateDirectory(@"~\App_Data\LogFiles\");
-                FileStream file = new FileStream(@"~\App_Data\LogFiles\" + fileName, FileMode.Create);
+                Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "Uploads\\LogFiles\\");
+                FileStream file = new FileStream(AppDomain.CurrentDomain.BaseDirectory + "Uploads\\LogFiles\\" + fileName, FileMode.Create);
                 responseStream.CopyTo(file);
             }
 
@@ -126,23 +134,30 @@ namespace CIT275_Back_end_interface.Controllers
             request.Credentials = credential;
             request.Method = WebRequestMethods.Ftp.ListDirectory;
 
-            using (var response = (FtpWebResponse)request.GetResponse())
+            try
             {
-                using (var stream = response.GetResponseStream())
+                using (var response = (FtpWebResponse)request.GetResponse())
                 {
-                    using (var reader = new StreamReader(stream, true))
+                    using (var stream = response.GetResponseStream())
                     {
-                        while (!reader.EndOfStream)
+                        using (var reader = new StreamReader(stream, true))
                         {
-                            string line = reader.ReadLine();
-                            if (line.Contains(".log"))
-                                files.Add(line);
+                            while (!reader.EndOfStream)
+                            {
+                                string line = reader.ReadLine();
+                                if (line.Contains(".log"))
+                                    files.Add(line);
+                            }
                         }
                     }
                 }
+                ViewBag.FileList = files;
             }
-
-            ViewBag.FileList = files;
+            catch (Exception e)
+            {
+                ViewBag.FileList = new List<string> { e.Message };
+            }
+            
             return files;
         }
 
