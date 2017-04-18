@@ -109,8 +109,12 @@
                 }, success: function (data) {
                     //change image to checkmark
                     $('span.glyphicon-transfer').removeClass('glyphicon-transfer').addClass('glyphicon-saved');
+                    console.log(data);
                 }, error: function (event, jqXHR, ajaxSettings, thrownError) {
-                    alert("There was an error processing " + fileName + ".");
+                    ("There was an error processing " + fileName + ".");
+                    console.log(event);
+                    console.log(jqXHR);
+                    console.log(thrownError);
                     //change image to error icon
                     $('span.glyphicon-transfer').removeClass('glyphicon-transfer').addClass('glyphicon-warning-sign');
                 }
