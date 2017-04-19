@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Security;
 using System.Security.Cryptography;
 using System.Text;
+using CIT275_Back_end_interface.Models;
 
 namespace CIT275_Back_end_interface.Controllers
 {
@@ -78,6 +79,7 @@ namespace CIT275_Back_end_interface.Controllers
             {
                 DownloadFile(ftpAddress, credential, fileName);
                 MoveFile(ftpAddress, credential, fileName);
+                UpdateFileStatus(fileName);
             }
             catch (Exception ex)
             {
@@ -86,6 +88,24 @@ namespace CIT275_Back_end_interface.Controllers
             }
 
             return Json("File uploaded successfully");
+        }
+
+        [NonAction]
+        public async Task<JsonResult> UpdateFileStatus(string fileName)
+        {
+            var db = new ApplicationDbContext();
+            var record = new FileLog();
+
+            //add record properties
+            record.FileName = fileName;
+            record.CreateDate = DateTime.Now;
+            record.FilePath = AppDomain.CurrentDomain.BaseDirectory + "Uploads\\LogFiles\\" + fileName;
+            record.Status = FileStatus.OK;
+
+            db.FileLogs.Add(record);
+            db.SaveChanges();
+
+            return Json("File processed");
         }
 
         [NonAction]
