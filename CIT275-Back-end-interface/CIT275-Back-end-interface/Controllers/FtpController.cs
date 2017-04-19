@@ -123,7 +123,6 @@ namespace CIT275_Back_end_interface.Controllers
             try
             {
                 FileStream file = new FileStream(AppDomain.CurrentDomain.BaseDirectory + "Uploads\\LogFiles\\" + fileName, FileMode.Create);
-                //FileStream file = new FileStream("C:\\Users\\jacobs33\\Source\\Repos\\CIT275-Back-end-interface\\CIT275-Back-end-interface\\CIT275-Back-end-interface\\Uploads\\LogFiles\\" + fileName, FileMode.Create);
                 responseStream.CopyTo(file);
             }
             catch (DirectoryNotFoundException de)
@@ -261,7 +260,5 @@ namespace CIT275_Back_end_interface.Controllers
 
             return ftpInfo;            
         }
-
-        //TODO: Create a file log record
     }
 }
