@@ -99,8 +99,14 @@ namespace CIT275_Back_end_interface.Controllers
             //add record properties
             record.FileName = fileName;
             record.CreateDate = DateTime.Now;
+            record.BaseDate = DateTime.Now;
             record.FilePath = AppDomain.CurrentDomain.BaseDirectory + "Uploads\\LogFiles\\" + fileName;
             record.Status = FileStatus.OK;
+            record.ClientID = 1;
+            record.AssetID = 1;            
+            record.Archived = false;
+            record.DeleteInd = false;
+            record.TranLogID = null;
 
             db.FileLogs.Add(record);
             db.SaveChanges();
